@@ -5,12 +5,14 @@ import location from "../assets/location-filled.svg";
 import forward from "../assets/ios-forward-fill.svg";
 import { Link } from "react-router-dom";
 import ThisComponentIsSponsorByTheseBrands from "../components/irrelevant/ThisComponentIsSponsorByTheseBrands";
+import FeaturedHotels from "../components/irrelevant/FeaturedHotels";
 
 const HomePage = () => {
   return (
     <div>
       <CyanMintBlob />
       <img className="absolute right-0 -z-10" src={hero} alt="" />
+      {/*Homepage Header */}
       <nav className="py-10 px-32 w-full inline-flex justify-between">
         <Logo />
         <div className="inline-flex gap-14 font-semibold text-sm items-center">
@@ -30,6 +32,7 @@ const HomePage = () => {
           </button>
         </div>
       </nav>
+      {/* Hero Banner */}
       <section className="my-24 mx-32 w-1/3">
         <h1
           className="text-5xl text-neutral-900 font-semibold"
@@ -60,6 +63,29 @@ const HomePage = () => {
         </p>
         {/* Kono bangumi wa goran no suponsaa no teikyou de okurishimasu!. */}
         <ThisComponentIsSponsorByTheseBrands />
+      </section>
+      {/* Recommendation */}
+      <section className="mt-32 mx-32">
+        <div className="inline-flex items-center gap-2">
+          <div className="w-8 h-[1px] bg-yellow-500"></div>
+          <span className="text-yellow-500 text-sm">Our Recommendation</span>
+        </div>
+        <div className="ml-10">
+          <div className="flex justify-between items-center">
+            <h2 className="text-neutral-900 text-3xl font-semibold">
+              Featured Hotel
+            </h2>
+            <div className="inline-flex gap-4">
+              <button className="py-3 px-4 bg-neutral-300 rounded-full">
+                <img className="invert rotate-180" src={forward} alt="" />
+              </button>
+              <button className="py-3 px-4 bg-green-500 rounded-full">
+                <img src={forward} alt="" />
+              </button>
+            </div>
+          </div>
+          <FeaturedHotels />
+        </div>
       </section>
     </div>
   );
