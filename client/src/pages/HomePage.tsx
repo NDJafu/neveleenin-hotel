@@ -6,6 +6,8 @@ import forward from "../assets/ios-forward-fill.svg";
 import { Link } from "react-router-dom";
 import ThisComponentIsSponsorByTheseBrands from "../components/irrelevant/ThisComponentIsSponsorByTheseBrands";
 import FeaturedHotels from "../components/irrelevant/FeaturedHotels";
+import ArticlesGrid from "../components/irrelevant/ArticlesGrid";
+import Footer from "../components/common/Footer";
 
 const HomePage = () => {
   return (
@@ -87,6 +89,25 @@ const HomePage = () => {
           <FeaturedHotels />
         </div>
       </section>
+      {/* Articles */}
+      <section className="mt-32 mx-32">
+        <div className="w-full gap-2 text-center capitalize">
+          <div className="w-8 h-[1px] bg-yellow-500 mx-auto"></div>
+          <span className="text-yellow-500 text-sm">
+            See tips and trick from our partnership
+          </span>
+          <h2 className="mt-1 text-neutral-900 text-3xl font-semibold">
+            Find out more about
+            <br />
+            finding and booking hotel
+          </h2>
+          <button className="mt-6 px-4 py-3 bg-green-500 text-white rounded-full font-semibold">
+            More Articles
+          </button>
+        </div>
+        <ArticlesGrid />
+      </section>
+      <Footer />
     </div>
   );
 };

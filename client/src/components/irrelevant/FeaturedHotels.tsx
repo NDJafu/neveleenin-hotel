@@ -2,7 +2,7 @@ import eurasia from "../../assets/eurasia.png";
 import kingford from "../../assets/kingford.png";
 import treacy from "../../assets/treacy.png";
 import orchid from "../../assets/orchid.png";
-import { Popular } from "../common/Badges";
+import { BestDeals, Popular } from "../common/Badges";
 
 const FeaturedHotels = () => {
   const hotels = [
@@ -22,7 +22,7 @@ const FeaturedHotels = () => {
       name: "Treacy's Hotel",
       price: "$200-$600",
       image: treacy,
-      badge: <Popular />,
+      badge: <BestDeals />,
     },
     {
       name: "The Orchid Hotel",

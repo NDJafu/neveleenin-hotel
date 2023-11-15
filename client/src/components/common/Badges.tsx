@@ -17,5 +17,21 @@ const Popular = () => {
     </div>
   );
 };
+const BestDeals = () => {
+  return (
+    <div
+      className="py-2 px-4
+      absolute bottom-4 left-4
+      inline-flex
+    bg-green-100 text-green-700
+      rounded-full
+      text-sm font-medium
+      gap-2.5"
+    >
+      <img src={wallet} alt="" />
+      Best Deals
+    </div>
+  );
+};
 
-export { Popular };
+export { Popular, BestDeals };
