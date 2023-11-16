@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import BrowseHotelsPage from "./pages/BrowseHotelsPage";
 
 function App() {
   alert(
@@ -9,6 +10,7 @@ function App() {
     <Router>
       <Routes>
         <Route index element={<HomePage />} />
+        <Route path="browse" element={<BrowseHotelsPage />} />
       </Routes>
     </Router>
   );

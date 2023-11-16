@@ -9,6 +9,7 @@ export default {
       black: colors.black,
       white: colors.white,
       green: {
+        50: "#E4FFF1",
         100: "#D1FAE5",
         500: "#10B981",
         700: "#047857",
