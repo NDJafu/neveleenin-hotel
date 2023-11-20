@@ -10,8 +10,9 @@ const hotelSchema = new mongoose.Schema({
         type : String, 
         required : true, 
     },
-    state:  {
-        type : String, 
+    status:  {
+        type : String,
+        enum : ['NEW','STATUS'], 
         required : true, 
     },
     owner:{

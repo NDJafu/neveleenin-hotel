@@ -5,7 +5,7 @@ const port = 3000;
 
 const {MongoClient} = require('mongodb');
 
-const url = 'mongodb+srv://OOPGroup:i7JgK1BqRUMDFtGo@oopdcluster.acgetdd.mongodb.net/?retryWrites=true&w=majority' ;
+const url = 'mongodb+srv://OOPGroup:<insert pass here>@oopdcluster.acgetdd.mongodb.net/?retryWrites=true&w=majority' ;
 const client = new MongoClient(url);
 async function run() {
   try {
