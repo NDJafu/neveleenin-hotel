@@ -6,10 +6,6 @@ const hotelSchema = new mongoose.Schema({
         type : String, 
         required : true, 
     },
-    address:{
-        type : String, 
-        required : true, 
-    },
     status:  {
         type : String,
         enum : ['NEW','STATUS'],
@@ -20,6 +16,9 @@ const hotelSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User',
         require : true
+    }, 
+    check_in:{
+        type : time 
     }
 });
 
