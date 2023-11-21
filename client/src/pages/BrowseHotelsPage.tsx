@@ -1,7 +1,5 @@
-import Header from "../components/common/Header";
-
 const BrowseHotelsPage = () => {
-  return <Header />;
+  return <></>;
 };
 
 export default BrowseHotelsPage;

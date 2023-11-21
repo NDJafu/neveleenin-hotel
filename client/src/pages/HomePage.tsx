@@ -26,12 +26,15 @@ const HomePage = () => {
               <Link to={""}>Article</Link>
             </div>
             <div className="py-2 px-4 bg-white bg-opacity-10 border border-white border-opacity-30 rounded-full text-neutral-100">
-              <Link to={""}>Browse Hotels</Link>
+              <Link to={"browse"}>Browse Hotels</Link>
             </div>
           </div>
-          <button className="py-3 px-6 rounded-full bg-green-100 text-green-700">
+          <Link
+            to="register"
+            className="py-3 px-6 rounded-full bg-green-100 text-green-700"
+          >
             Sign Up!
-          </button>
+          </Link>
         </div>
       </nav>
       {/* Hero Banner */}
