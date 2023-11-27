@@ -28,6 +28,12 @@ export default {
       yellow: {
         500: "#F59E0B",
       },
+      blue: {
+        100: "#D6EDFE",
+        200: "#D1E1FA",
+        700: "#7EC7FB",
+        900: "#045C78",
+      },
     },
   },
   plugins: [],

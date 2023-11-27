@@ -1,8 +1,11 @@
 import Logo from "./Logo";
 import location from "../../assets/location-filled.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
   return (
     <header className="sticky px-16 h-32 bg-gradient-to-b from-green-50 from-50% to-transparent">
       <div className="h-2/3 flex gap-6 items-center justify-between">
@@ -10,8 +13,14 @@ const Header = () => {
         <div className="ml-11 my-8 inline-flex items-center relative flex-grow">
           <img className="absolute left-4" src={location} alt="" />
           <input
+            name="search"
             className="pl-14 h-12 border w-2/3 border-neutral-300 rounded-full text-sm outline-none font-medium"
             placeholder="Search for the location you want!"
+            onKeyDown={(event) =>
+              event.key == "Enter" ? navigate("browse?q=" + query) : ""
+            }
+            onChange={(e) => setQuery(e.target.value)}
+            value={query}
           />
         </div>
 

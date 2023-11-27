@@ -1,5 +1,7 @@
+import SearchFilter from "../components/Listings/SearchFilter";
+
 const BrowseHotelsPage = () => {
-  return <></>;
+  return <SearchFilter />;
 };
 
 export default BrowseHotelsPage;
