@@ -20,13 +20,13 @@ const HomePage = () => {
         <div className="inline-flex gap-14 font-semibold text-sm items-center">
           <div className="inline-flex gap-6 h-fit">
             <div className="py-2 px-4 bg-white bg-opacity-10 border border-white border-opacity-30 rounded-full text-neutral-100">
-              <Link to={""}>About Us</Link>
+              <Link to="">About Us</Link>
             </div>
             <div className="py-2 px-4 bg-white bg-opacity-10 border border-white border-opacity-30 rounded-full text-neutral-100">
-              <Link to={""}>Article</Link>
+              <Link to="">Article</Link>
             </div>
             <div className="py-2 px-4 bg-white bg-opacity-10 border border-white border-opacity-30 rounded-full text-neutral-100">
-              <Link to={"browse"}>Browse Hotels</Link>
+              <Link to="browse">Browse Hotels</Link>
             </div>
           </div>
           <Link

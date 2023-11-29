@@ -1,22 +1,9 @@
-import { useEffect, useState } from "react";
 import { AiFillStar } from "react-icons/ai";
-import { SetURLSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
-interface SearchParamsProps {
-  searchParams: URLSearchParams;
-  setSearchParams: SetURLSearchParams;
-}
-
-const RatingFilter = ({ searchParams, setSearchParams }: SearchParamsProps) => {
-  const defaultRating = searchParams.get("rating") ?? 0;
-  const [ratingFilter, setRatingFilter] = useState(+defaultRating);
-
-  useEffect(() => {
-    setSearchParams((previous) => {
-      previous.set("rating", ratingFilter.toString());
-      return previous;
-    });
-  }, [ratingFilter, searchParams]);
+const RatingFilter = () => {
+  const [params, setParams] = useSearchParams();
+  const rating = params.get("rating") ?? 0;
 
   return (
     <div>
@@ -26,12 +13,18 @@ const RatingFilter = ({ searchParams, setSearchParams }: SearchParamsProps) => {
           <AiFillStar
             key={index}
             size={24}
-            className={
-              index + 1 <= ratingFilter ? "fill-yellow-500" : "fill-neutral-500"
-            }
-            onClick={() =>
-              setRatingFilter(ratingFilter != index + 1 ? index + 1 : 0)
-            }
+            className={`${
+              index + 1 <= +rating ? "fill-yellow-500" : "fill-neutral-500"
+            } transition-colors duration-500`}
+            onClick={() => {
+              if (+rating != index + 1) {
+                params.set("rating", (index + 1).toString());
+                setParams(params, { replace: true });
+              } else {
+                params.delete("rating");
+                setParams(params, { replace: true });
+              }
+            }}
           />
         ))}
       </div>

@@ -15,7 +15,7 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
-        <Route path="*" element={<MainLayout />}>
+        <Route element={<MainLayout />}>
           <Route path="browse" element={<BrowseHotelsPage />} />
         </Route>
       </Routes>

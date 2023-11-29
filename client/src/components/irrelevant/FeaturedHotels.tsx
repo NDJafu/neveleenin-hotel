@@ -38,9 +38,9 @@ const FeaturedHotels = () => {
         <div key={index}>
           <div className="relative">
             <img src={hotel.image} alt="" />
-            {hotel.badge}
+            <div className="absolute bottom-4 left-4">{hotel.badge}</div>
           </div>
-          <div className="my-6  flex flex-col gap-2 font-medium">
+          <div className="my-6 flex flex-col gap-2 font-medium">
             <h3 className="text-2xl text-neutral-900">{hotel.name}</h3>
             <p className="text-neutral-700 text-xl">{hotel.price}</p>
           </div>

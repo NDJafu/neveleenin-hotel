@@ -5,9 +5,9 @@ const Popular = () => {
   return (
     <div
       className="py-2 px-4
-      absolute bottom-4 left-4
+      w-fit
       inline-flex
-    bg-red-100 text-red-500
+      bg-red-100 text-red-500
       rounded-full
       text-sm font-medium
       gap-2.5"
@@ -21,7 +21,7 @@ const BestDeals = () => {
   return (
     <div
       className="py-2 px-4
-      absolute bottom-4 left-4
+      w-fit
       inline-flex
     bg-green-100 text-green-700
       rounded-full

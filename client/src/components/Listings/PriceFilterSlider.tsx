@@ -1,33 +1,32 @@
 import { useEffect, useState } from "react";
-import { SetURLSearchParams } from "react-router-dom";
 import ReactSlider from "react-slider";
 import "./slider.css";
 import { useDebounce } from "../../utils/hooks";
+import { useSearchParams } from "react-router-dom";
 
 interface PriceButtonProps {
   onClick: () => void;
   text: string;
+  active: boolean;
 }
 
-const PriceSetButton = ({ onClick, text }: PriceButtonProps) => {
+const PriceSetButton = ({ onClick, text, active }: PriceButtonProps) => {
   return (
-    <button className="bg-black/5 px-2 py-1 rounded-full" onClick={onClick}>
+    <button
+      className={`${
+        active ? "bg-blue-700 text-white" : "bg-black/5"
+      } px-2 py-1 rounded-full`}
+      onClick={onClick}
+    >
       {text}
     </button>
   );
 };
 
-interface SearchParamsProps {
-  searchParams: URLSearchParams;
-  setSearchParams: SetURLSearchParams;
-}
-
-const PriceFilterSlider = ({
-  searchParams,
-  setSearchParams,
-}: SearchParamsProps) => {
-  const min = searchParams.get("from") ?? 200;
-  const max = searchParams.get("to") ?? 750;
+const PriceFilterSlider = () => {
+  const [params, setParams] = useSearchParams();
+  const min = params.get("from") ?? 0;
+  const max = params.get("to") ?? 500;
   const [priceFilter, setPriceFilter] = useState([+min, +max]);
   const debouncedPriceFilter = useDebounce(priceFilter);
 
@@ -35,15 +34,23 @@ const PriceFilterSlider = ({
     return (value / 2000) * 208 - 18 - (14 * value) / 2000;
   }
 
+  const isSamePrice = (range: number[]) => {
+    return priceFilter[0] == range[0] && priceFilter[1] == range[1];
+  };
+
   useEffect(() => {
-    console.log("set price");
-    setSearchParams((previous) => {
-      previous.set("from", priceFilter[0].toString());
-      previous.set("to", priceFilter[1].toString());
-      console.log(...previous);
-      return previous;
-    });
-  }, [debouncedPriceFilter, searchParams]);
+    if (priceFilter[0] == 0) {
+      params.delete("from");
+      setParams(params, { replace: true });
+      params.set("to", priceFilter[1].toString());
+      setParams(params, { replace: true });
+    } else {
+      params.set("from", priceFilter[0].toString());
+      setParams(params, { replace: true });
+      params.set("to", priceFilter[1].toString());
+      setParams(params, { replace: true });
+    }
+  }, [debouncedPriceFilter]);
 
   return (
     <>
@@ -51,13 +58,17 @@ const PriceFilterSlider = ({
       <div className="flex flex-col gap-4 px-4">
         <div className="flex text-white relative h-6">
           <div
-            className="bg-blue-700 text-center absolute p-0.5 w-12 rounded"
+            className={`${
+              priceFilter[1] < 550 ? "hidden" : ""
+            } bg-blue-700 text-center absolute p-0.5 w-12 rounded`}
             style={{ left: `${offset(priceFilter[0])}px` }}
           >
             {priceFilter[0]}
           </div>
           <div
-            className="bg-blue-700 text-center absolute p-0.5 w-12 rounded"
+            className={`${
+              priceFilter[0] > 1450 ? "hidden" : ""
+            } bg-blue-700 text-center absolute p-0.5 w-12 rounded`}
             style={{ left: `${offset(priceFilter[1])}px` }}
           >
             {priceFilter[1]}
@@ -71,7 +82,7 @@ const PriceFilterSlider = ({
           value={priceFilter}
           onChange={setPriceFilter}
           thumbClassName="bg-white w-4 h-4 rounded-full outline-none drop-shadow cursor-grab"
-          minDistance={550}
+          minDistance={200}
         />
         <div className="text-black/20">
           <div className="flex justify-between px-2">
@@ -87,18 +98,22 @@ const PriceFilterSlider = ({
       </div>
       <div className="flex text-neutral-500 flex-wrap gap-2">
         <PriceSetButton
+          active={isSamePrice([0, 200])}
           onClick={() => setPriceFilter([0, 200])}
           text="Under 200$"
         />
         <PriceSetButton
+          active={isSamePrice([0, 450])}
           onClick={() => setPriceFilter([0, 450])}
           text="Under 450$"
         />
         <PriceSetButton
+          active={isSamePrice([450, 1200])}
           onClick={() => setPriceFilter([450, 1200])}
           text="450$ - 1200$"
         />
         <PriceSetButton
+          active={isSamePrice([1200, 2000])}
           onClick={() => setPriceFilter([1200, 2000])}
           text="Above 1200$"
         />

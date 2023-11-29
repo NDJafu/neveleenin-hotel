@@ -1,39 +1,53 @@
 import Logo from "./Logo";
-import location from "../../assets/location-filled.svg";
-import { Link, useNavigate } from "react-router-dom";
+import locationImg from "../../assets/location-filled.svg";
+import { Link, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 
 const Header = () => {
-  const navigate = useNavigate();
-  const [query, setQuery] = useState("");
+  const [params, setParams] = useSearchParams();
+  const [query, setQuery] = useState(params.get("q") ?? "");
+
   return (
     <header className="sticky px-16 h-32 bg-gradient-to-b from-green-50 from-50% to-transparent">
       <div className="h-2/3 flex gap-6 items-center justify-between">
         <Logo />
         <div className="ml-11 my-8 inline-flex items-center relative flex-grow">
-          <img className="absolute left-4" src={location} alt="" />
+          <img className="absolute left-4" src={locationImg} alt="" />
           <input
             name="search"
             className="pl-14 h-12 border w-2/3 border-neutral-300 rounded-full text-sm outline-none font-medium"
             placeholder="Search for the location you want!"
-            onKeyDown={(event) =>
-              event.key == "Enter" ? navigate("browse?q=" + query) : ""
-            }
-            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(event) => {
+              if (event.key == "Enter") {
+                if (query.length === 0) {
+                  params.delete("q");
+                  setParams(params, { replace: true });
+                } else {
+                  params.set("q", query);
+                  setParams(params, { replace: true });
+                }
+              }
+            }}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              console.log(query);
+            }}
             value={query}
           />
         </div>
 
         <nav className="px-4 flex gap-12 text-neutral-500 text-sm">
-          <Link to={""}>About Us</Link>
-          <Link to={""}>Article</Link>
-          <Link to={""}>Browse Hotel</Link>
+          <Link to="">About Us</Link>
+          <Link to="">Article</Link>
+          <Link to="">Browse Hotel</Link>
         </nav>
         <div className="flex gap-4 text-green-700 font-semibold text-sm">
-          <button className="bg-green-100 px-6 py-3 rounded-full">
+          <Link to="/register" className="bg-green-100 px-6 py-3 rounded-full">
             Sign Up
-          </button>
-          <button className="bg-green-100 px-6 py-3 rounded-full">Login</button>
+          </Link>
+          <Link to="/login" className="bg-green-100 px-6 py-3 rounded-full">
+            Login
+          </Link>
         </div>
       </div>
     </header>
