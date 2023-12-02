@@ -5,19 +5,36 @@ import registerBG from "../assets/login.png";
 
 const FemboyRNG = () => {
   const theShot = Math.floor(Math.random() * 6) + 1;
-  return theShot === 1 ? (
-    <video
-      className="h-full absolute top-0 left-0 -z-10 brightness-75"
-      src={femboy}
-      autoPlay={true}
-      loop
-    />
-  ) : (
-    <img
-      className="w-2/5 h-full object-cover object-left absolute top-0 left-0 -z-10 brightness-75"
-      src={registerBG}
-    />
-  );
+  switch (theShot) {
+    case 1:
+      return (
+        <video
+          className="h-full absolute top-0 left-0 -z-10 brightness-75"
+          src={femboy}
+          autoPlay={true}
+          loop
+        />
+      );
+    case 2:
+      return (
+        <iframe
+          className="absolute top-0 left-0 -z-10"
+          width="50%"
+          height="100%"
+          src="https://www.youtube.com/embed/56NUTCOeUUg?si=i9gS8lkRzGb0yhe0&autoplay=1&controls=0"
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        />
+      );
+    default:
+      return (
+        <img
+          className="w-2/5 h-full object-cover object-left absolute top-0 left-0 -z-10 brightness-75"
+          src={registerBG}
+        />
+      );
+  }
 };
 
 const RegisterPage = () => {

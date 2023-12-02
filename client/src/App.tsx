@@ -1,9 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import BrowseHotelsPage from "./pages/BrowseHotelsPage";
-import MainLayout from "./components/MainLayout";
+import MainLayout from "./pages/MainLayout";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import HotelDetailsPage from "./pages/HotelDetailsPage";
 
 function App() {
   alert(
@@ -17,6 +18,7 @@ function App() {
         <Route path="register" element={<RegisterPage />} />
         <Route element={<MainLayout />}>
           <Route path="browse" element={<BrowseHotelsPage />} />
+          <Route path="detail/:id" element={<HotelDetailsPage />} />
         </Route>
       </Routes>
     </Router>
