@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 
  const policySchema = new mongoose.Schema({
-    type: {
+    hotelID: {
+        type: mongoose.Schema.ObjectId,
+        require: true,
+        ref: "Hotel"
+    },
+    policyName: {
         type: String ,
         require : true
     },

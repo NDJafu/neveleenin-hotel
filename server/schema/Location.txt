@@ -11,5 +11,5 @@ const locationSchema = mongoose.Schema({
     adress:{
         type : String, 
         require: true
-    } 
-})
+    }
+})  

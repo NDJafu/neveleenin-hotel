@@ -7,13 +7,21 @@ const roomSchema = new mongoose.Schema({
         require : true
     },
     price:{
-        type : Int32Array,
+        type : Number,
         require : true
     },
     hotel:{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Hotel',
         require : true
+    },
+    roomNumber: {
+        type: Number,
+        require: true
+    },
+    roomSize: {
+        type: Number,
+        reqiure: true
     }
 })
 
