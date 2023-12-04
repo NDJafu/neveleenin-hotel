@@ -21,6 +21,7 @@ const hotelSchema = new mongoose.Schema({
         type : time 
     }
 });
+  
 
 const Hotel = mongoose.model('Hotel', hotelSchema);
 
