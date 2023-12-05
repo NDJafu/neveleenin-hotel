@@ -1,20 +1,20 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const legalDocument = new mongoose.Schema({
+const legalDocumentSchema = new mongoose.Schema({
     hotelID: {
         type: mongoose.Schema.ObjectId,
         ref: "Hotel",
-        require: true
+        required: true
     },
-    DocumentName: {
+    documentName: { 
         type: String,
-        require: true,
+        required: true,
     },
     description: {
         type: String,
-        require: String
+        required: true 
     }
-})
+});
 
-const LegalDocument = mongoose.model(LegalDocument, legalDocument)
+const LegalDocument = mongoose.model("LegalDocument", legalDocumentSchema);
 module.exports = LegalDocument;

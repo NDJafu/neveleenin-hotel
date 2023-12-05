@@ -1,15 +1,15 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const reverstration = mongoose.Schema({
+const reverstrationSchema = mongoose.Schema({
     roomID: {
         type: mongoose.Schema.ObjectId,
-        require: true,
+        required: true,
         ref: "Room"
     },
     userID: {
         type: mongoose.Schema.ObjectId,
         ref: "User",
-        require: true
+        required: true
     },
     reverstrationStatus: {
         type: String,
@@ -18,17 +18,17 @@ const reverstration = mongoose.Schema({
     },
     bookingDate: {
         type: Date,
-        require: true
+        required: true
     },
     checkInTime: {
         type: Date,
-        require: true
+        required: true
     },
     checkOutTime: {
         type: Date,
-        require: true
+        required: true
     } 
-})
+});
 
-const Reverstration = mongoose.model('Reverstration', reverstration)
-module.exports = Reverstration
+const Reverstration = mongoose.model('Reverstration', reverstrationSchema);
+module.exports = Reverstration;
