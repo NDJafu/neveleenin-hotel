@@ -1,20 +1,20 @@
 const mongoose = require('mongoose');
 
-const hotelService = mongoose.Schema({
+const hotelServiceSchema = mongoose.Schema({
     HotelID: {
         type: mongoose.Schema.ObjectId,
         ref: "Hotel",
-        require: true
+        required: true
     },
     name: {
         type: String,
-        enum: ["", ""],
-        require: true
+        enum: ["", ""], 
+        required: true
     },
     description: {
         type: String,
     }
-})
+});
 
-const HotelService = mongoose.model("RoomAmenity", hotelService)
-module.exports = HotelService
+const HotelService = mongoose.model("HotelService", hotelServiceSchema);
+module.exports = HotelService;

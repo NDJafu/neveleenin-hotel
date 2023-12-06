@@ -26,39 +26,41 @@ const hotelSchema = new mongoose.Schema({
 const Hotel = mongoose.model('Hotel', hotelSchema);
 
 const mongoose = require('mongoose');
-const User = require('./user');
 
 const hotelSchema = new mongoose.Schema({
-    hotelName:{
-        type : String, 
-        required : true, 
+    hotelName: {
+        type: String,
+        required: true,
     },
-    owner:{
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'User',
-        require : true
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
     },
     legalDocument: {
         type: mongoose.Schema.ObjectId,
         ref: "LegalDocument",
-        require: true
+        required: true,
     },
     hotelAddress: {
         type: String,
-        require: true,
+        required: true,
     },
-    MembershipStatus:  {
-        type : String,
+    MembershipStatus: {
+        type: String,
         enum: ['Available', 'Not_Available'],
-        default : 'Available', 
-        required : true, 
-    }, 
+        default: 'Available',
+        required: true,
+    },
     hotelDescription: {
-      type: String,
-      require: true,  
+        type: String,
+        required: true,
     },
 });
 
 const Hotel = mongoose.model('Hotel', hotelSchema);
 
-module.exports = Hotel; 
+
+module.exports = Hotel;
+
+

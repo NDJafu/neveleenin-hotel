@@ -42,6 +42,11 @@ const hotelRouter = require("./router/hotelRouter")
 const roomRouter = require("./router/roomRouter")
 const policyRouter = require("./router/policyRouter")
 const reviewRouter = require("./router/reviewRouter")
+const hotelServiceRouter = require("./router/hotelServiceRouter")
+const invoiceRouter = require("./router/invoiceRouter")
+const roomAmenitiesRouter = require("./router/RoomAmenityRouter")
+const legalDocumentRouter = require("./router/legalDocumentRouter")
+
 
 app.use(express.json())
 app.use(cors())
