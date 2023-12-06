@@ -1,10 +1,18 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const app = express();
-const port = 3000;
-const { MongoClient } = require("mongodb");
 
+const PORT = 3000;
+
+app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
+
+const authRouter = require("./router/authRouter");
 const userRouter = require("./router/userRouter");
 const hotelRouter = require("./router/hotelRouter");
 const roomRouter = require("./router/roomRouter");
@@ -14,29 +22,28 @@ const hotelServiceRouter = require("./router/hotelServiceRouter");
 const invoiceRouter = require("./router/invoiceRouter");
 const roomAmenitiesRouter = require("./router/RoomAmenityRouter");
 const legalDocumentRouter = require("./router/legalDocumentRouter");
-
-app.use(express.json());
-app.use(cors());
+const authenticateUser = require("./middlewares/authentication");
 
 const url =
   "mongodb+srv://PussyMan:WhatAreYouLookinAtPussy@testingcluster.w43hpcb.mongodb.net/?retryWrites=true&w=majority";
+
 mongoose.connect(url);
 
-const connection = mongoose.connection;
-connection.once("open", () => {
-  console.log("What are you looking at pussy!");
+mongoose.connection.once("open", () => {
+  console.log("Connected to database successfully!");
 });
 
-app.use("/user", userRouter);
+app.use("/auth", authRouter);
+app.use("/user", authenticateUser, userRouter);
 app.use("/hotel", hotelRouter);
 app.use("/room", roomRouter);
-app.use("/policy", policyRouter);
-app.use("/review", reviewRouter);
+app.use("/policy", authenticateUser, policyRouter);
+app.use("/review", authenticateUser, reviewRouter);
+app.use("/service", authenticateUser, hotelServiceRouter);
+app.use("/invoice", invoiceRouter);
+app.use("/amenities", authenticateUser, roomAmenitiesRouter);
+app.use("/documents", authenticateUser, legalDocumentRouter);
 
-app.get("/", (req, res) => {
-  res.send("What r u lookin at? Pussy!");
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}`);
 });

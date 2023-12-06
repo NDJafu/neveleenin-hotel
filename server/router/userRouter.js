@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const mongoose = require("mongoose");
 let User = require("../schema/user");
+const { checkPermissonToChangeInfo } = require("../utils/checkPermission");
 
 router.get("/getall", async (req, res) => {
   try {
@@ -12,12 +12,15 @@ router.get("/getall", async (req, res) => {
 });
 
 // Update a user
-router.put("/:username", async (req, res) => {
-  const username = req.params.username;
-  const { username: newUsername, password: newPassword } = req.body;
+router.put("/:userID", async (req, res) => {
+  const { userID } = req.params;
+
+  const { newUsername, newPassword } = req.body;
+
+  checkPermissonToChangeInfo(req.user, userID);
 
   try {
-    const user = await User.findOne(username);
+    const user = await User.findById(userID);
 
     if (!user) {
       res.status(404).json({ message: "User not found" });

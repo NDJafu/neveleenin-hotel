@@ -13,7 +13,6 @@ const hotelSchema = new mongoose.Schema({
   legalDocument: {
     type: mongoose.Schema.ObjectId,
     ref: "LegalDocument",
-    required: true,
   },
   hotelAddress: {
     type: String,
