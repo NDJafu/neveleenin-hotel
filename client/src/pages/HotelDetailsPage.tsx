@@ -100,6 +100,28 @@ const HotelDetailsPage = () => {
           </>
         )}
       </div>
+      {/* Rooms */}
+      <section className="my-8">
+        <div className="h-[1px] w-8 bg-yellow-500 mx-auto" />
+        <p className="text-yellow-500 text-center">Rooms</p>
+        <h2 className="text-neutral-900 font-semibold text-center text-3xl my-1">
+          Available Rooms
+        </h2>
+        <div className="flex flex-col gap-5 py-5 w-2/3 bg-black/5 mx-auto text-2xl">
+          <div className="flex flex-col bg-black/5 gap-4">
+            <h3>Imposter Room</h3>
+            <div className="flex gap-6">
+              <div className="aspect-[2/1] h-72 bg-black/5" />
+              <div className="flex flex-col gap-5 my-1">
+                <h5 className="text-xl text-neutral-700">
+                  1 Beds, Double Room
+                </h5>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   );
 };
