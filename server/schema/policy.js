@@ -1,5 +1,20 @@
 const mongoose = require('mongoose');
 
+ const policySchema = new mongoose.Schema({
+    type: {
+        type: String ,
+        require : true
+    },
+    description:{
+        type: String, 
+        require: true 
+    }
+ })
+
+ const Policy = mongoose.model('Policy', policySchema);
+
+const mongoose = require('mongoose');
+
 const policySchema = new mongoose.Schema({
     hotelID: {
         type: mongoose.Schema.ObjectId,
@@ -18,4 +33,5 @@ const policySchema = new mongoose.Schema({
 
 const Policy = mongoose.model('Policy', policySchema);
 
-module.exports = Policy;
+ module.exports = Policy;
+
