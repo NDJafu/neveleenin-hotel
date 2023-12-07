@@ -99,9 +99,9 @@ router.get("/refresh", async (req, res) => {
       const accessToken = jwt.sign(
         {
           id: user._id,
-          email: user.email,
+          username: user.username,
           role: user.role,
-          avatar: user.image,
+          avatar: user.avatar,
         },
         process.env.JWT_ACCESS_SECRET,
         { expiresIn: "30s" }

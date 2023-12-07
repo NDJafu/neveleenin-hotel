@@ -5,14 +5,33 @@ import MainLayout from "./pages/MainLayout";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HotelDetailsPage from "./pages/HotelDetailsPage";
+import { useAppSelector } from "./utils/hooks";
+import { useRefreshMutation } from "./features/auth/authSlice";
+import { useEffect } from "react";
+import AdminLayout from "./pages/admin/AdminLayout";
+import NotFound from "./pages/NotFound";
 
 function App() {
-  alert(
-    "this page is just an for education purpose, we don't own any of these, all rights reserved"
-  );
+  const token = useAppSelector((state) => state.auth.token);
+
+  const [refresh] = useRefreshMutation();
+
+  useEffect(() => {
+    const verifyRefreshToken = async () => {
+      try {
+        await refresh();
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    if (!token) verifyRefreshToken();
+  }, []);
+
   return (
     <Router>
       <Routes>
+        <Route path="*" element={<NotFound />} />
         <Route index element={<HomePage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
@@ -20,6 +39,15 @@ function App() {
           <Route path="browse" element={<BrowseHotelsPage />} />
           <Route path="detail/:id" element={<HotelDetailsPage />} />
         </Route>
+
+        {token && (
+          <Route path="admin" element={<AdminLayout />}>
+            <Route index element={<div>hello</div>} />
+            <Route path="manage-hotel" element={<div>manage hotel</div>} />
+            <Route path="manage-user" element={<div>manage user</div>} />
+            <Route path="report" element={<div>report</div>} />
+          </Route>
+        )}
       </Routes>
     </Router>
   );

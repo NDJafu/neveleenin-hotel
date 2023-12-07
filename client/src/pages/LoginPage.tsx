@@ -1,8 +1,48 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import loginBG from "../assets/login.png";
 import logo from "../assets/logo.svg";
+import { useLoginMutation } from "../features/auth/authSlice";
+import { useAppSelector } from "../utils/hooks";
+import { useEffect, useRef, useState } from "react";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const [login, { isLoading }] = useLoginMutation();
+  const user = useAppSelector((state) => state.auth.currentUser);
+  const [loginForm, setLoginForm] = useState({
+    username: "",
+    password: "",
+  });
+
+  const usernameInput = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    usernameInput.current?.focus();
+  }, []);
+
+  const submitForm = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await login({ ...loginForm });
+      setLoginForm({ username: "", password: "" });
+      navigate("/");
+    } catch (err: FetchBaseQueryError | any) {
+      if (!err.orginalStatus) {
+        alert("No server response.");
+      } else if (err.orginalStatus === 400) {
+        alert("Missing field.");
+      } else if (err.orginalStatus === 401) {
+        alert("Unauthorized.");
+      } else {
+        alert("Login failed, try again later.");
+      }
+    }
+  };
+
+  if (user) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <div
       className="w-full h-screen p-4"
@@ -23,15 +63,23 @@ const LoginPage = () => {
         <h1 className="text-center text-4xl font-semibold">
           Log in to Neveleenin
         </h1>
-        <form className="flex flex-col text text-neutral-500 mt-16 w-3/4 mx-auto gap-10">
-          <label className="flex flex-col gap-1" htmlFor="email">
-            Email
+        <form
+          className="flex flex-col text text-neutral-500 mt-16 w-3/4 mx-auto gap-10"
+          onSubmit={submitForm}
+        >
+          <label className="flex flex-col gap-1" htmlFor="username">
+            Username
             <input
               className="bg-neutral-300 py-3 px-6 rounded-lg outline-none"
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Enter your email here"
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Enter your username here"
+              ref={usernameInput}
+              value={loginForm.username}
+              onChange={(e) =>
+                setLoginForm((prev) => ({ ...prev, username: e.target.value }))
+              }
             />
           </label>
           <label className="flex flex-col gap-1" htmlFor="password">
@@ -42,9 +90,17 @@ const LoginPage = () => {
               name="password"
               id="password"
               placeholder="Enter your password here"
+              value={loginForm.password}
+              onChange={(e) =>
+                setLoginForm((prev) => ({ ...prev, password: e.target.value }))
+              }
             />
           </label>
-          <button className="bg-green-100 text-green-700 w-2/5 p-4 font-semibold text-lg rounded-lg mx-auto">
+          <button
+            type="submit"
+            className="bg-green-100 text-green-700 w-2/5 p-4 font-semibold text-lg rounded-lg mx-auto"
+            disabled={isLoading}
+          >
             Login
           </button>
           <span>

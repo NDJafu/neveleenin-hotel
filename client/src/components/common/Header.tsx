@@ -2,10 +2,13 @@ import Logo from "./Logo";
 import locationImg from "../../assets/location-filled.svg";
 import { Link, useSearchParams } from "react-router-dom";
 import { useState } from "react";
+import { useAppSelector } from "../../utils/hooks";
+import { FaBell } from "react-icons/fa";
 
 const Header = () => {
   const [params, setParams] = useSearchParams();
   const [query, setQuery] = useState(params.get("q") ?? "");
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
 
   return (
     <header className="sticky px-16 h-32 bg-gradient-to-b from-green-50 from-50% to-transparent">
@@ -41,14 +44,31 @@ const Header = () => {
           <Link to="">Article</Link>
           <Link to="">Browse Hotel</Link>
         </nav>
-        <div className="flex gap-4 text-green-700 font-semibold text-sm">
-          <Link to="/register" className="bg-green-100 px-6 py-3 rounded-full">
-            Sign Up
-          </Link>
-          <Link to="/login" className="bg-green-100 px-6 py-3 rounded-full">
-            Login
-          </Link>
-        </div>
+
+        {!currentUser ? (
+          <div className="flex gap-4 text-green-700 font-semibold text-sm">
+            <Link
+              to="/register"
+              className="bg-green-100 px-6 py-3 rounded-full"
+            >
+              Sign Up
+            </Link>
+            <Link to="/login" className="bg-green-100 px-6 py-3 rounded-full">
+              Login
+            </Link>
+          </div>
+        ) : (
+          <div className="flex items-center text-neutral-900 font-semibold gap-4">
+            <span>Welcome! {currentUser.username}</span>
+            <img
+              src={currentUser.avatar}
+              width={36}
+              height={36}
+              className="border-4 border-neutral-500/20 rounded-full"
+            />
+            <FaBell size={24} />
+          </div>
+        )}
       </div>
     </header>
   );
