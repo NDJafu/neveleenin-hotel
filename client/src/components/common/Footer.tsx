@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="mx-32 my-24 flex gap-20 justify-stretch">
+    <footer className="mx-32 py-24 flex gap-20 justify-stretch">
       <div className="flex-grow">
         <Logo />
         <p className="w-1/2 mt-4 mb-6 text-neutral-700 text-sm">

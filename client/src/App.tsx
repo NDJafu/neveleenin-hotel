@@ -10,6 +10,9 @@ import { useRefreshMutation } from "./features/auth/authSlice";
 import { useEffect } from "react";
 import AdminLayout from "./pages/admin/AdminLayout";
 import NotFound from "./pages/NotFound";
+import BookingPage from "./pages/BookingPage";
+import BookingLayout from "./pages/BookingLayout";
+import PaymentPage from "./pages/PaymentPage";
 
 function App() {
   const token = useAppSelector((state) => state.auth.token);
@@ -38,6 +41,11 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="browse" element={<BrowseHotelsPage />} />
           <Route path="detail/:id" element={<HotelDetailsPage />} />
+        </Route>
+
+        <Route element={<BookingLayout />}>
+          <Route path="booking/:id" element={<BookingPage />} />
+          <Route path="payment" element={<PaymentPage />} />
         </Route>
 
         {token && (
