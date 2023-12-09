@@ -27,12 +27,12 @@ router.post("/create", authenticateUser, async (req, res) => {
 });
 
 // Update a room
-router.put("/:roomNumber", authenticateUser, async (req, res) => {
-  const roomNumber = req.params.roomNumber;
+router.put("/:roomID", authenticateUser, async (req, res) => {
+  const roomID = req.params.roomID;
   const { name, price, hotel, roomSize } = req.body;
 
   try {
-    const room = await Room.findOne(roomNumber).populate("hotel");
+    const room = await Room.findOne(roomID).populate("hotelID");
 
     if (!room) {
       res.status(404).json({ message: "Room not found" });
@@ -41,7 +41,7 @@ router.put("/:roomNumber", authenticateUser, async (req, res) => {
 
     room.name = name || room.name;
     room.price = price || room.price;
-    room.hotel = hotel || room.hotel._id;
+    room.hotelID = hotel || room.hotelID;
     room.roomSize = roomSize || room.roomSize;
 
     await room.save();
@@ -53,11 +53,11 @@ router.put("/:roomNumber", authenticateUser, async (req, res) => {
 });
 
 // Delete a room
-router.delete("/:roomNumber", authenticateUser, async (req, res) => {
-  const roomNumber = req.params.roomNumber;
+router.delete("/:roomID", authenticateUser, async (req, res) => {
+  const roomID = req.params.roomID;
 
   try {
-    const room = await Room.findOneAndDelete(roomNumber);
+    const room = await Room.findOneAndDelete(roomID);
 
     if (!room) {
       res.status(404).json({ message: "Room not found" });
