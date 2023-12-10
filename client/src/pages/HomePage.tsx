@@ -8,8 +8,11 @@ import ThisComponentIsSponsorByTheseBrands from "../components/irrelevant/ThisCo
 import FeaturedHotels from "../components/irrelevant/FeaturedHotels";
 import ArticlesGrid from "../components/irrelevant/ArticlesGrid";
 import Footer from "../components/common/Footer";
+import HotelRegisterBanner from "../components/irrelevant/HotelRegisterBanner";
+import { useAppSelector } from "../utils/hooks";
 
 const HomePage = () => {
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
   return (
     <div>
       <CyanMintBlob />
@@ -29,12 +32,21 @@ const HomePage = () => {
               <Link to="browse">Browse Hotels</Link>
             </div>
           </div>
-          <Link
-            to="register"
-            className="py-3 px-6 rounded-full bg-green-100 text-green-700"
-          >
-            Sign Up!
-          </Link>
+          {!currentUser ? (
+            <Link
+              to="register"
+              className="py-3 px-6 rounded-full bg-green-100 text-green-700"
+            >
+              Sign Up!
+            </Link>
+          ) : (
+            <Link
+              to="browse"
+              className="py-3 px-6 rounded-full bg-green-100 text-green-700 -mr-20"
+            >
+              Discover your next stay
+            </Link>
+          )}
         </div>
       </nav>
       {/* Hero Banner */}
@@ -110,6 +122,8 @@ const HomePage = () => {
         </div>
         <ArticlesGrid />
       </section>
+      {/* Hotel register */}
+      <HotelRegisterBanner />
       <Footer />
     </div>
   );

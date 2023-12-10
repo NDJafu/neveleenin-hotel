@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import femboy from "../assets/femboy.mp4";
 import registerBG from "../assets/login.png";
@@ -38,6 +38,9 @@ const FemboyRNG = () => {
 };
 
 const RegisterPage = () => {
+  const location = useLocation();
+  console.log(location.search);
+
   return (
     <div className="w-full h-screen p-4">
       <div className="text-white text-base gap-3 inline-flex items-center font-bold">
@@ -85,7 +88,10 @@ const RegisterPage = () => {
           </button>
           <span>
             Already have an account?{" "}
-            <Link className="text-neutral-900 underline" to={"/register"}>
+            <Link
+              className="text-neutral-900 underline"
+              to={"/login" + location.search}
+            >
               Log in
             </Link>
           </span>

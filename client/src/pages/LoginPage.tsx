@@ -25,7 +25,6 @@ const LoginPage = () => {
     try {
       await login({ ...loginForm });
       setLoginForm({ username: "", password: "" });
-      navigate("/");
     } catch (err: FetchBaseQueryError | any) {
       if (!err.orginalStatus) {
         alert("No server response.");
