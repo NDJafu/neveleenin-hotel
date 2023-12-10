@@ -39,11 +39,11 @@ router.put("/:userID", async (req, res) => {
 });
 
 // Delete a user
-router.delete("/:username", async (req, res) => {
-  const username = req.params.username;
+router.delete("/:userID", async (req, res) => {
+  const userID = req.params.userID;
 
   try {
-    const user = await User.findOneAndDelete(username);
+    const user = await User.findByIdAndDelete(userID);
 
     if (!user) {
       res.status(404).json({ message: "User not found" });

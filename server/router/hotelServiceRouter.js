@@ -28,7 +28,7 @@ router.post('/create', async (req, res) => {
 // Update a hotel service
 router.put('/:hotelServiceId', async (req, res) => {
   const hotelServiceId = req.params.hotelServiceId;
-  const { HotelID, name, description } = req.body;
+  const { hotelID, name, description } = req.body;
 
   try {
     const hotelService = await HotelService.findById(hotelServiceId);
@@ -38,7 +38,7 @@ router.put('/:hotelServiceId', async (req, res) => {
       return;
     }
 
-    hotelService.HotelID = HotelID || hotelService.HotelID;
+    hotelService.hotelID = hotelID || hotelService.hotelID._id;
     hotelService.name = name || hotelService.name;
     hotelService.description = description || hotelService.description;
 
