@@ -3,8 +3,6 @@ import locationImg from "../../assets/location-filled.svg";
 import { Link, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useAppSelector } from "../../utils/hooks";
-import { FaBell } from "react-icons/fa";
-import ProfileDropdown from "./ProfileDropdown";
 import UserProfile from "./UserProfile";
 
 const Header = () => {

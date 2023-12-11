@@ -32,6 +32,7 @@ const HotelDetailsPage = () => {
     if (numberOfGuests > 1) result += "s";
     return result;
   };
+  const roomPrices = rooms?.map((obj) => obj["pricing"]);
 
   return (
     <main className="mx-24">
@@ -47,7 +48,10 @@ const HotelDetailsPage = () => {
           </p>
         </div>
         <p className="text-2xl text-green-700 font-medium">
-          170-248$/
+          {roomPrices &&
+            roomPrices.length > 0 &&
+            `${Math.min(...roomPrices)}-${Math.max(...roomPrices)}`}
+          $/
           <span className="text-xl text-neutral-500">Night</span>
         </p>
       </div>

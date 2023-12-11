@@ -29,7 +29,8 @@ const Hotel = ({
       </div>
       <div className="flex flex-col gap-8 py-4">
         <p className="text-green-700 text-2xl font-medium">
-          {pricing}$/<span className="text-neutral-500 text-xl">Night</span>
+          {pricing}$/
+          <span className="text-neutral-500 text-xl">Night</span>
         </p>
         <Link
           to={`/detail/${_id}`}

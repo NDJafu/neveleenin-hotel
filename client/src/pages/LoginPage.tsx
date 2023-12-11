@@ -1,4 +1,4 @@
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import loginBG from "../assets/login.png";
 import logo from "../assets/logo.svg";
 import { useAppSelector } from "../utils/hooks";
@@ -7,7 +7,8 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useLoginMutation } from "../features/auth/authApiSlice";
 
 const LoginPage = () => {
-  const [login, { isLoading }] = useLoginMutation();
+  const navigate = useNavigate();
+  const [login, { isLoading, error }] = useLoginMutation();
   const currentUser = useAppSelector((state) => state.auth.currentUser);
   const [loginForm, setLoginForm] = useState({
     username: "",
@@ -15,27 +16,25 @@ const LoginPage = () => {
   });
 
   const usernameInput = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     usernameInput.current?.focus();
   }, []);
 
   const submitForm = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await login({ ...loginForm });
-      setLoginForm({ username: "", password: "" });
-    } catch (err: FetchBaseQueryError | any) {
-      if (!err.orginalStatus) {
-        alert("No server response.");
-      } else if (err.orginalStatus === 400) {
-        alert("Missing field.");
-      } else if (err.orginalStatus === 401) {
-        alert("Unauthorized.");
-      } else {
-        alert("Login failed, try again later.");
-      }
-    }
+    await login({ ...loginForm })
+      .unwrap()
+      .then(() => {
+        navigate(-1);
+      })
+      .catch((error) => alert(error.data.error));
+    setLoginForm({ username: "", password: "" });
   };
+
+  if (currentUser) {
+    navigate(-1);
+  }
 
   return (
     <div
@@ -49,7 +48,6 @@ const LoginPage = () => {
         backgroundSize: "cover",
       }}
     >
-      {!!currentUser && <Navigate to="/" />}
       <div className="text-white text-base gap-3 inline-flex items-center font-bold">
         <img src={logo} alt="neveleenin" />
         <span>Neveleenin</span>

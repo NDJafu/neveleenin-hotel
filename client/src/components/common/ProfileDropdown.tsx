@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useLogoutMutation } from "../../features/auth/authApiSlice";
 
 type ProfileProps = {
   role: string;
@@ -8,6 +9,7 @@ type ProfileProps = {
 const ProfileDropdown = React.forwardRef(
   (props: ProfileProps, ref: React.Ref<HTMLDivElement>) => {
     const { role } = props;
+    const [logout, { isLoading }] = useLogoutMutation();
     return (
       <div
         className="absolute right-1/5 top-12 px-2 py-2 w-4/5
@@ -25,11 +27,18 @@ const ProfileDropdown = React.forwardRef(
         {role == "owner" && (
           <Link
             to="."
-            className="hover:bg-black/5 px-4 py-2 rounded border-t border-neutral-500"
+            className="hover:bg-black/5 px-4 py-2 rounded border-t border-neutral-300"
           >
             Manage hotels
           </Link>
         )}
+        <button
+          className="hover:bg-black/5 px-4 py-2 rounded border-t border-neutral-300 disabled:text-neutral-700"
+          onClick={() => logout()}
+          disabled={isLoading}
+        >
+          Log out
+        </button>
       </div>
     );
   }

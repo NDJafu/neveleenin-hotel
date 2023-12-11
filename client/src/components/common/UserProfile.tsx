@@ -30,7 +30,7 @@ const UserProfile = (user: User) => {
         src={user.avatar}
         width={36}
         height={36}
-        className="border-4 border-neutral-500/20 rounded-full"
+        className="border-4 border-neutral-500/20 rounded-full hover:cursor-pointer hover:brightness-50"
         onClick={() => setOpen(!open)}
         ref={avatarRef}
       />
