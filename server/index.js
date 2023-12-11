@@ -23,7 +23,7 @@ const legalDocumentRouter = require("./router/legalDocumentRouter");
 const authenticateUser = require("./middlewares/authentication");
 
 const PORT = process.env.PORT;
-const url = process.env.MONGO_URI_HOANG;
+const url = process.env.MONGO_URI;
 
 mongoose.connect(url);
 
