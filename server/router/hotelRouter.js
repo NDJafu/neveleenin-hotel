@@ -2,6 +2,15 @@ const router = require("express").Router();
 const authenticateUser = require("../middlewares/authentication");
 const Hotel = require("../schema/hotel");
 
+router.get("/getall", async (req, res) => {
+  try {
+    const hotels = await Hotel.find({});
+    res.status(200).json(hotels);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.get("/:hotelID", async (req, res) => {
   const { hotelID } = req.params;
   try {
@@ -10,7 +19,7 @@ router.get("/:hotelID", async (req, res) => {
       .populate("legalDocument");
 
     res.status(200).json({ message: "Get hotel success!", hotel });
-  } catch {
+  } catch (error) {
     res.status(500).json({ Error: error.message });
   }
 });

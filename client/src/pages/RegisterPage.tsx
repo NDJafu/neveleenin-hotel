@@ -1,7 +1,10 @@
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import femboy from "../assets/femboy.mp4";
 import registerBG from "../assets/login.png";
+import { useState } from "react";
+import { useRegisterMutation } from "../app/apiSlice";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const FemboyRNG = () => {
   const theShot = Math.floor(Math.random() * 6) + 1;
@@ -39,7 +42,34 @@ const FemboyRNG = () => {
 
 const RegisterPage = () => {
   const location = useLocation();
-  console.log(location.search);
+  const [register, { isLoading }] = useRegisterMutation();
+  const [registerForm, setRegisterForm] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (registerForm.password.trim() == registerForm.confirmPassword.trim()) {
+      try {
+        await register({ ...registerForm });
+        setRegisterForm({ username: "", password: "", confirmPassword: "" });
+      } catch (err: FetchBaseQueryError | any) {
+        if (!err.orginalStatus) {
+          alert("No server response.");
+        } else if (err.orginalStatus === 400) {
+          alert("Missing field.");
+        } else if (err.orginalStatus === 401) {
+          alert("Unauthorized.");
+        } else {
+          alert("Register failed, try again later.");
+        }
+      }
+    } else {
+      alert("Confirm password doesn't match your password!");
+    }
+  };
 
   return (
     <div className="w-full h-screen p-4">
@@ -47,12 +77,18 @@ const RegisterPage = () => {
         <img src={logo} alt="neveleenin" />
         <span>Neveleenin</span>
       </div>
-      <FemboyRNG />
+      <img
+        className="w-2/5 h-full object-cover object-left absolute top-0 left-0 -z-10 brightness-75"
+        src={registerBG}
+      />
       <div className="absolute right-0 w-[63%] inset-y-0 bg-white rounded-l-3xl px-4 flex flex-col justify-center">
         <h1 className="text-center text-4xl font-semibold">
           Create your account
         </h1>
-        <form className="flex flex-col text text-neutral-500 mt-16 w-1/2 mx-auto gap-10">
+        <form
+          className="flex flex-col text text-neutral-500 mt-16 w-1/2 mx-auto gap-10"
+          onSubmit={handleSubmit}
+        >
           <label className="flex flex-col gap-1" htmlFor="username">
             Username
             <input
@@ -61,19 +97,16 @@ const RegisterPage = () => {
               name="username"
               id="username"
               placeholder="Enter your username here"
+              value={registerForm.username}
+              onChange={(e) => {
+                setRegisterForm((prev) => ({
+                  ...prev,
+                  username: e.target.value,
+                }));
+              }}
             />
           </label>
           <label className="flex flex-col gap-1" htmlFor="email">
-            Email
-            <input
-              className="bg-neutral-300 py-3 px-6 rounded-lg outline-none"
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Enter your email here"
-            />
-          </label>
-          <label className="flex flex-col gap-1" htmlFor="password">
             Password
             <input
               className="bg-neutral-300 py-3 px-6 rounded-lg outline-none"
@@ -81,9 +114,37 @@ const RegisterPage = () => {
               name="password"
               id="password"
               placeholder="Enter your password here"
+              value={registerForm.password}
+              onChange={(e) => {
+                setRegisterForm((prev) => ({
+                  ...prev,
+                  password: e.target.value,
+                }));
+              }}
             />
           </label>
-          <button className="bg-green-100 text-green-700 w-2/5 p-4 font-semibold text-lg rounded-lg mx-auto">
+          <label className="flex flex-col gap-1" htmlFor="password">
+            Confirm Password
+            <input
+              className="bg-neutral-300 py-3 px-6 rounded-lg outline-none"
+              type="password"
+              name="cPassword"
+              id="cPassword"
+              placeholder="Enter your password again here"
+              value={registerForm.confirmPassword}
+              onChange={(e) => {
+                setRegisterForm((prev) => ({
+                  ...prev,
+                  confirmPassword: e.target.value,
+                }));
+              }}
+            />
+          </label>
+          <button
+            type="submit"
+            className="bg-green-100 text-green-700 w-2/5 p-4 font-semibold text-lg rounded-lg mx-auto"
+            disabled={isLoading}
+          >
             Sign up
           </button>
           <span>

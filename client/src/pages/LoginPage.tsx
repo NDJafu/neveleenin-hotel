@@ -1,7 +1,7 @@
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import loginBG from "../assets/login.png";
 import logo from "../assets/logo.svg";
-import { useLoginMutation } from "../features/auth/authSlice";
+import { useLoginMutation } from "../app/apiSlice";
 import { useAppSelector } from "../utils/hooks";
 import { useEffect, useRef, useState } from "react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";

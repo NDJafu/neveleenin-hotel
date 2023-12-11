@@ -6,7 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HotelDetailsPage from "./pages/HotelDetailsPage";
 import { useAppSelector } from "./utils/hooks";
-import { useRefreshMutation } from "./features/auth/authSlice";
+import { useRefreshMutation } from "./app/apiSlice";
 import { useEffect } from "react";
 import AdminLayout from "./pages/admin/AdminLayout";
 import NotFound from "./pages/NotFound";
