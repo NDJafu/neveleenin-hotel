@@ -6,10 +6,14 @@ const reservationSchema = mongoose.Schema({
         required: true,
         ref: "Room"
     },
+    guestName: {
+        type: String,
+        required: false
+      },
     userID: {
         type: mongoose.Schema.ObjectId,
         ref: "User",
-        required: true
+        required: false
     },
     status: {
         type: String,

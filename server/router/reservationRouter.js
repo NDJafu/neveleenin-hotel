@@ -16,7 +16,7 @@ router.route("/getReservasion/:reservationID").get(async (req, res) => {
   try {
     const reservation = await Reservation.findById(reservationID);
     res.status(200).json(reservation);
-  } catch {
+  } catch (error) {
     res.status(500).json({ Error: error.message });
   }
 });
@@ -26,7 +26,7 @@ router.route("/getReservasionsByUser/:userID").get(async (req, res) => {
     try {
       const reservations = await Reservation.find({ userID: userID });
       res.status(200).json(reservations);
-    } catch {
+    } catch (error) {
       res.status(500).json({ Error: error.message });
     }
   });
