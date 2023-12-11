@@ -1,15 +1,14 @@
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import loginBG from "../assets/login.png";
 import logo from "../assets/logo.svg";
-import { useLoginMutation } from "../app/apiSlice";
 import { useAppSelector } from "../utils/hooks";
 import { useEffect, useRef, useState } from "react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useLoginMutation } from "../features/auth/authApiSlice";
 
 const LoginPage = () => {
-  const navigate = useNavigate();
   const [login, { isLoading }] = useLoginMutation();
-  const user = useAppSelector((state) => state.auth.currentUser);
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
@@ -38,10 +37,6 @@ const LoginPage = () => {
     }
   };
 
-  if (user) {
-    return <Navigate to="/" />;
-  }
-
   return (
     <div
       className="w-full h-screen p-4"
@@ -54,6 +49,7 @@ const LoginPage = () => {
         backgroundSize: "cover",
       }}
     >
+      {!!currentUser && <Navigate to="/" />}
       <div className="text-white text-base gap-3 inline-flex items-center font-bold">
         <img src={logo} alt="neveleenin" />
         <span>Neveleenin</span>

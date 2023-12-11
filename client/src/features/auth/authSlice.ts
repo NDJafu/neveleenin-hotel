@@ -1,5 +1,3 @@
-import { jwtDecode } from "jwt-decode";
-import { apiSlice } from "../../app/apiSlice";
 import { User } from "../../app/types";
 import { createSlice } from "@reduxjs/toolkit";
 

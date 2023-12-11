@@ -1,12 +1,15 @@
 import { apiSlice } from "../../app/apiSlice";
 import { Hotel } from "../../app/types";
 
-export const hotelApiSlice = apiSlice.injectEndpoints({
+const hotelApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getHotelListings: builder.query<Hotel[], void>({
       query: () => "/hotel/getall",
     }),
+    getHotelById: builder.query<Hotel, string>({
+      query: (id) => `/hotel/${id}`,
+    }),
   }),
 });
 
-export const { useGetHotelListingsQuery } = hotelApiSlice;
+export const { useGetHotelListingsQuery, useGetHotelByIdQuery } = hotelApiSlice;

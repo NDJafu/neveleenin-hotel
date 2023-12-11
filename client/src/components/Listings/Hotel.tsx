@@ -7,7 +7,7 @@ const Hotel = ({
   _id,
   hotelName,
   hotelAddress,
-  thumbNail,
+  thumbnail,
   images,
   pricing,
   tags,
@@ -15,7 +15,7 @@ const Hotel = ({
   return (
     <div className="flex gap-8">
       <div className="relative">
-        <img src={thumbNail} className="object-cover w-52 h-36 rounded-xl" />
+        <img src={thumbnail} className="object-cover w-52 h-36 rounded-xl" />
         <div className="absolute bottom-1 right-1">
           {tags?.includes("popular") && <Popular />}
           {tags?.includes("best-deal") && <BestDeals />}

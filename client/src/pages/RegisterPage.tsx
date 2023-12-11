@@ -1,20 +1,22 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import femboy from "../assets/femboy.mp4";
 import registerBG from "../assets/login.png";
 import { useState } from "react";
-import { useRegisterMutation } from "../app/apiSlice";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useAppSelector } from "../utils/hooks";
+import { useRegisterMutation } from "../features/auth/authApiSlice";
 
 const FemboyRNG = () => {
   const theShot = Math.floor(Math.random() * 6) + 1;
-  switch (theShot) {
+  const [firstShot, setFirstShot] = useState(theShot);
+  switch (firstShot) {
     case 1:
       return (
         <video
           className="h-full absolute top-0 left-0 -z-10 brightness-75"
           src={femboy}
-          autoPlay={true}
+          autoPlay
           loop
         />
       );
@@ -42,6 +44,7 @@ const FemboyRNG = () => {
 
 const RegisterPage = () => {
   const location = useLocation();
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
   const [register, { isLoading }] = useRegisterMutation();
   const [registerForm, setRegisterForm] = useState({
     username: "",
@@ -73,14 +76,12 @@ const RegisterPage = () => {
 
   return (
     <div className="w-full h-screen p-4">
+      {!!currentUser && <Navigate to="/" />}
       <div className="text-white text-base gap-3 inline-flex items-center font-bold">
         <img src={logo} alt="neveleenin" />
         <span>Neveleenin</span>
       </div>
-      <img
-        className="w-2/5 h-full object-cover object-left absolute top-0 left-0 -z-10 brightness-75"
-        src={registerBG}
-      />
+      <FemboyRNG />
       <div className="absolute right-0 w-[63%] inset-y-0 bg-white rounded-l-3xl px-4 flex flex-col justify-center">
         <h1 className="text-center text-4xl font-semibold">
           Create your account

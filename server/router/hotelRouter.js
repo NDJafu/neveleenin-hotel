@@ -18,7 +18,7 @@ router.get("/:hotelID", async (req, res) => {
       .populate("owner")
       .populate("legalDocument");
 
-    res.status(200).json({ message: "Get hotel success!", hotel });
+    res.status(200).json(hotel);
   } catch (error) {
     res.status(500).json({ Error: error.message });
   }

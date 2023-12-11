@@ -5,22 +5,25 @@ import { BsCalendar3 } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
 import GuestOptions from "../components/Detail/GuestOptions";
+import { useGetRoomsQuery } from "../features/room/roomApiSlice";
+import { useGetHotelByIdQuery } from "../features/hotel/hotelApiSlice";
+import Room from "../components/Detail/Room";
 
 const HotelDetailsPage = () => {
   const { id } = useParams();
+  const { data: rooms } = useGetRoomsQuery(id!);
+  const { data: detail } = useGetHotelByIdQuery(id!);
   const [dates, setDates] = useState<DateObject[]>([
     new DateObject(),
     new DateObject().add(1, "days"),
   ]);
-  const nights = dates.length > 1 ? dates[1].day - dates[0].day : 0;
   const [guests, setGuests] = useState({
     rooms: 1,
     adults: 1,
     childrens: 0,
   });
-
   const [showGuestModal, setShowGuestModal] = useState(false);
-
+  const nights = dates.length > 1 ? dates[1].day - dates[0].day : 0;
   const guestString = () => {
     let result = `${guests.rooms} Room`;
     if (guests.rooms > 1) result += "s";
@@ -36,11 +39,11 @@ const HotelDetailsPage = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-bold text-4xl text-neutral-900">
-            Sussy Amongus Hotel
+            {detail?.hotelName}
           </h1>
           <p className="inline-flex items-center text-neutral-500 gap-2">
             <img src={fluent_location} />
-            NYC, Queen
+            {detail?.hotelAddress}
           </p>
         </div>
         <p className="text-2xl text-green-700 font-medium">
@@ -49,7 +52,7 @@ const HotelDetailsPage = () => {
         </p>
       </div>
       {/* Gallery */}
-      <div className="w-full aspect-[3/1] bg-black my-11"></div>
+      <div className="w-full aspect-[3/1] bg-black my-11" />
       {/* Date & Guests Picker */}
       <div className="flex justify-center items-center gap-5">
         <div className="flex items-center border-2 border-neutral-500 rounded-full px-2 py-1.5">
@@ -107,19 +110,10 @@ const HotelDetailsPage = () => {
         <h2 className="text-neutral-900 font-semibold text-center text-3xl my-1">
           Available Rooms
         </h2>
-        <div className="flex flex-col gap-5 py-5 w-2/3 bg-black/5 mx-auto text-2xl">
-          <div className="flex flex-col bg-black/5 gap-4">
-            <h3>Imposter Room</h3>
-            <div className="flex gap-6">
-              <div className="aspect-[2/1] h-72 bg-black/5" />
-              <div className="flex flex-col gap-5 my-1">
-                <h5 className="text-xl text-neutral-700">
-                  1 Beds, Double Room
-                </h5>
-                <div></div>
-              </div>
-            </div>
-          </div>
+        <div className="flex flex-col gap-5 py-5 w-2/3 mx-auto text-2xl">
+          {rooms?.map((room, index) => (
+            <Room key={index} {...room} />
+          ))}
         </div>
       </section>
     </main>

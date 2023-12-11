@@ -4,6 +4,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useAppSelector } from "../../utils/hooks";
 import { FaBell } from "react-icons/fa";
+import ProfileDropdown from "./ProfileDropdown";
+import UserProfile from "./UserProfile";
 
 const Header = () => {
   const [params, setParams] = useSearchParams();
@@ -58,16 +60,7 @@ const Header = () => {
             </Link>
           </div>
         ) : (
-          <div className="flex items-center text-neutral-900 font-semibold gap-4">
-            <span>Welcome! {currentUser.username}</span>
-            <img
-              src={currentUser.avatar}
-              width={36}
-              height={36}
-              className="border-4 border-neutral-500/20 rounded-full"
-            />
-            <FaBell size={24} />
-          </div>
+          <UserProfile {...currentUser} />
         )}
       </div>
     </header>
