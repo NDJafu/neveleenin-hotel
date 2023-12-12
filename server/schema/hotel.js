@@ -10,10 +10,24 @@ const hotelSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  legalDocument: {
-    type: mongoose.Schema.ObjectId,
-    ref: "LegalDocument",
-  },
+  legalDocuments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "LegalDocument",
+    },
+  ],
+  services: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Service",
+    },
+  ],
+  policies: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Policy",
+    },
+  ],
   hotelAddress: {
     type: String,
     required: true,
@@ -30,7 +44,7 @@ const hotelSchema = new mongoose.Schema({
   },
   pricing: {
     type: Number,
-    required: false
+    required: false,
   },
   images: {
     type: [String],
