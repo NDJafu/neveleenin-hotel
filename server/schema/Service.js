@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const policySchema = new mongoose.Schema({
+const serviceSchema = new mongoose.Schema({
   policyName: {
     type: String,
     required: true,
@@ -11,6 +11,6 @@ const policySchema = new mongoose.Schema({
   },
 });
 
-const Policy = mongoose.model("Policy", policySchema);
+const Service = mongoose.model("Service", serviceSchema);
 
-module.exports = Policy;
+module.exports = Service;
