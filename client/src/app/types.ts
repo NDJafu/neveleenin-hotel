@@ -11,6 +11,7 @@ export interface Hotel {
   hotelAddress?: string;
   thumbnail?: string;
   images?: [];
+  membershipStatus: string;
   pricing?: string;
   tags?: string[];
 }

@@ -10,7 +10,7 @@ const AdminLayout = () => {
         <Logo />
         <AdminNav />
       </aside>
-      <main className="col-span-7 bg-[#E3E3E3] py-2.5 px-4">
+      <main className="flex flex-col gap-2.5 col-span-7 bg-[#E3E3E3] py-2.5 px-4">
         <AdminHeader />
         <Outlet />
       </main>

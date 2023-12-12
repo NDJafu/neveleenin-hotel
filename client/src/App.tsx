@@ -1,21 +1,30 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import BrowseHotelsPage from "./pages/BrowseHotelsPage";
-import MainLayout from "./pages/MainLayout";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import HotelDetailsPage from "./pages/HotelDetailsPage";
 import { useRefreshMutation } from "./features/auth/authApiSlice";
 import { useAppSelector } from "./utils/hooks";
 import { useEffect } from "react";
-import AdminLayout from "./pages/admin/AdminLayout";
+
+//Page imports
 import NotFound from "./pages/NotFound";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import BrowseHotelsPage from "./pages/BrowseHotelsPage";
+import HotelDetailsPage from "./pages/HotelDetailsPage";
 import BookingPage from "./pages/BookingPage";
-import BookingLayout from "./pages/BookingLayout";
 import PaymentPage from "./pages/PaymentPage";
+
+//Admin
+import DashboardPage from "./pages/admin/DashboardPage";
+import ManageHotelPage from "./pages/admin/ManageHotelPage";
+
+//Layout imports
+import MainLayout from "./pages/MainLayout";
+import BookingLayout from "./pages/BookingLayout";
+import AdminLayout from "./pages/admin/AdminLayout";
 
 function App() {
   const token = useAppSelector((state) => state.auth.token);
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
 
   const [refresh] = useRefreshMutation();
 
@@ -48,10 +57,10 @@ function App() {
           <Route path="payment" element={<PaymentPage />} />
         </Route>
 
-        {token && (
+        {token && currentUser?.role == "admin" && (
           <Route path="admin" element={<AdminLayout />}>
-            <Route index element={<div>hello</div>} />
-            <Route path="manage-hotel" element={<div>manage hotel</div>} />
+            <Route index element={<DashboardPage />} />
+            <Route path="manage-hotel" element={<ManageHotelPage />} />
             <Route path="manage-user" element={<div>manage user</div>} />
             <Route path="report" element={<div>report</div>} />
           </Route>

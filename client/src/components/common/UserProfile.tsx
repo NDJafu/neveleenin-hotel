@@ -2,9 +2,14 @@ import ProfileDropdown from "./ProfileDropdown";
 import { FaBell } from "react-icons/fa";
 import { User } from "../../app/types";
 import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { BsBell } from "react-icons/bs";
 
 const UserProfile = (user: User) => {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const isInAdminPanel =
+    location.pathname.substring(1).split("/")[0] == "admin";
 
   const menuRef = useRef<HTMLDivElement>(null);
   const avatarRef = useRef<HTMLImageElement>(null);
@@ -35,7 +40,7 @@ const UserProfile = (user: User) => {
         ref={avatarRef}
       />
       {!!open && <ProfileDropdown {...user} ref={menuRef} />}
-      <FaBell size={24} />
+      {isInAdminPanel ? <BsBell size={24} /> : <FaBell size={24} />}
     </div>
   );
 };
