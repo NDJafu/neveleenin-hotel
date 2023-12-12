@@ -1,23 +1,20 @@
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import femboy from "../assets/femboy.mp4";
 import registerBG from "../assets/login.png";
 import { useState } from "react";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAppSelector } from "../utils/hooks";
 import { useRegisterMutation } from "../features/auth/authApiSlice";
 
-const FemboyRNG = () => {
-  const theShot = Math.floor(Math.random() * 6) + 1;
-  const [firstShot, setFirstShot] = useState(theShot);
+const FemboyRNG = ({ firstShot }: { firstShot: number }) => {
   switch (firstShot) {
     case 1:
       return (
         <video
           className="h-full absolute top-0 left-0 -z-10 brightness-75"
           src={femboy}
-          autoPlay
-          loop
+          autoPlay={true}
+          loop={true}
         />
       );
     case 2:
@@ -44,6 +41,7 @@ const FemboyRNG = () => {
 
 const RegisterPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentUser = useAppSelector((state) => state.auth.currentUser);
   const [register, { isLoading }] = useRegisterMutation();
   const [registerForm, setRegisterForm] = useState({
@@ -52,36 +50,35 @@ const RegisterPage = () => {
     confirmPassword: "",
   });
 
+  const theShot = Math.floor(Math.random() * 6) + 1;
+  const [firstShot, setFirstShot] = useState(theShot);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (registerForm.password.trim() == registerForm.confirmPassword.trim()) {
-      try {
-        await register({ ...registerForm });
-        setRegisterForm({ username: "", password: "", confirmPassword: "" });
-      } catch (err: FetchBaseQueryError | any) {
-        if (!err.orginalStatus) {
-          alert("No server response.");
-        } else if (err.orginalStatus === 400) {
-          alert("Missing field.");
-        } else if (err.orginalStatus === 401) {
-          alert("Unauthorized.");
-        } else {
-          alert("Register failed, try again later.");
-        }
-      }
+      await register({ ...registerForm })
+        .unwrap()
+        .then(() => {
+          navigate("/login");
+        })
+        .catch((error) => alert(error.data.error));
     } else {
-      alert("Confirm password doesn't match your password!");
+      alert("Confirm password doesn't match!");
     }
+    setRegisterForm({ username: "", password: "", confirmPassword: "" });
   };
+
+  if (currentUser) {
+    navigate(-1);
+  }
 
   return (
     <div className="w-full h-screen p-4">
-      {!!currentUser && <Navigate to="/" />}
       <div className="text-white text-base gap-3 inline-flex items-center font-bold">
         <img src={logo} alt="neveleenin" />
         <span>Neveleenin</span>
       </div>
-      <FemboyRNG />
+      <FemboyRNG firstShot={firstShot} />
       <div className="absolute right-0 w-[63%] inset-y-0 bg-white rounded-l-3xl px-4 flex flex-col justify-center">
         <h1 className="text-center text-4xl font-semibold">
           Create your account

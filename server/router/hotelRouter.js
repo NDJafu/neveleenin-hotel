@@ -16,7 +16,7 @@ router.get("/:hotelID", async (req, res) => {
   try {
     const hotel = await Hotel.findById(hotelID)
       .populate("owner")
-      .populate("legalDocument");
+      .populate("legalDocuments");
 
     res.status(200).json(hotel);
   } catch (error) {
@@ -62,7 +62,7 @@ router.put("/:hotelID", authenticateUser, async (req, res) => {
   try {
     const hotel = await Hotel.findById(hotelID)
       .populate("owner")
-      .populate("legalDocument");
+      .populate("legalDocuments");
 
     if (!hotel) {
       res.status(404).json({ message: "Hotel not found" });

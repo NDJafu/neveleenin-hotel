@@ -56,7 +56,6 @@ const authApiSlice = apiSlice.injectEndpoints({
           const { accessToken } = data;
 
           const user = jwtDecode<User>(accessToken);
-          console.log(user);
 
           dispatch(setCredentials({ user, accessToken }));
         } catch (err) {

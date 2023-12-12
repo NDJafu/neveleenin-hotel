@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../../features/auth/authApiSlice";
 
 type ProfileProps = {
@@ -10,6 +10,7 @@ const ProfileDropdown = React.forwardRef(
   (props: ProfileProps, ref: React.Ref<HTMLDivElement>) => {
     const { role } = props;
     const [logout, { isLoading }] = useLogoutMutation();
+    const navigate = useNavigate();
     const location = useLocation();
     const isInAdminPanel =
       location.pathname.substring(1).split("/")[0] == "admin";
@@ -47,8 +48,11 @@ const ProfileDropdown = React.forwardRef(
           </Link>
         )}
         <button
-          className="hover:bg-black/5 px-4 py-2 rounded border-t border-neutral-300 disabled:text-neutral-700 text-left"
-          onClick={() => logout()}
+          className="hover:bg-black/5 px-4 py-2 rounded border-t border-neutral-300 text-red-500 disabled:text-neutral-700 text-left"
+          onClick={() => {
+            if (isInAdminPanel) navigate("/");
+            logout();
+          }}
           disabled={isLoading}
         >
           Log out

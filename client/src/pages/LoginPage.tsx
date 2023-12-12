@@ -3,7 +3,6 @@ import loginBG from "../assets/login.png";
 import logo from "../assets/logo.svg";
 import { useAppSelector } from "../utils/hooks";
 import { useEffect, useRef, useState } from "react";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useLoginMutation } from "../features/auth/authApiSlice";
 
 const LoginPage = () => {
@@ -26,7 +25,11 @@ const LoginPage = () => {
     await login({ ...loginForm })
       .unwrap()
       .then(() => {
-        navigate(-1);
+        if (currentUser?.role == "admin") {
+          navigate("/admin");
+        } else {
+          navigate(-1);
+        }
       })
       .catch((error) => alert(error.data.error));
     setLoginForm({ username: "", password: "" });
