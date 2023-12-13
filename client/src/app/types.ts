@@ -22,4 +22,5 @@ export interface Room {
   thumbnail: string;
   name: string;
   pricing: number;
+  hotelID: Hotel;
 }

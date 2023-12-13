@@ -21,6 +21,7 @@ import ManageHotelPage from "./pages/admin/ManageHotelPage";
 import MainLayout from "./pages/MainLayout";
 import BookingLayout from "./pages/BookingLayout";
 import AdminLayout from "./pages/admin/AdminLayout";
+import { storage } from "./app/firebase";
 
 function App() {
   const token = useAppSelector((state) => state.auth.token);
@@ -30,11 +31,11 @@ function App() {
 
   useEffect(() => {
     const verifyRefreshToken = async () => {
-      try {
-        await refresh();
-      } catch (err) {
-        console.log(err);
-      }
+      await refresh()
+        .unwrap()
+        .catch((error) => {
+          console.log(error.data);
+        });
     };
 
     if (!token) verifyRefreshToken();

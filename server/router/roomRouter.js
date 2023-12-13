@@ -2,12 +2,22 @@ const router = require("express").Router();
 const authenticateUser = require("../middlewares/authentication");
 const Room = require("../schema/room");
 
-router.route("/getRoomsByHotel/:hotelID").get(async (req, res) => {
+router.get("/getRoomsByHotel/:hotelID", async (req, res) => {
   const { hotelID } = req.params;
   try {
     const rooms = await Room.find({ hotelID: hotelID });
     res.status(200).json(rooms);
-  } catch {
+  } catch (error) {
+    res.status(500).json({ Error: error.message });
+  }
+});
+
+router.get("/:roomID", async (req, res) => {
+  const { roomID } = req.params;
+  try {
+    const room = await Room.findById(roomID).populate("hotelID");
+    res.status(200).json(room);
+  } catch (error) {
     res.status(500).json({ Error: error.message });
   }
 });

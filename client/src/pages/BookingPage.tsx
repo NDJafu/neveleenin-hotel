@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { BsPeopleFill } from "react-icons/bs";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { IoIosBed } from "react-icons/io";
 import { FaUtensils } from "react-icons/fa6";
+import { useGetRoomByIdQuery } from "../features/room/roomApiSlice";
 
 const BookingPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [bookingParams, setBookingParams] = useSearchParams();
+  const nights = bookingParams.get("nights") ?? 1;
   const [contactForm, setContactForm] = useState({
     fullName: "",
     number: "(+84)",
     email: "",
   });
+  const { data: room } = useGetRoomByIdQuery(id!);
 
   return (
     <div className="w-3/5 mx-auto grid grid-cols-3 gap-4">
@@ -56,25 +60,32 @@ const BookingPage = () => {
       <div className="bg-white p-4 flex flex-col divide-y divide-neutral-300 gap-4 rounded-lg">
         <div className="flex items-center gap-2.5 text-neutral-900 font-semibold">
           <img
-            src="https://placehold.co/48"
+            src={room?.hotelID.thumbnail}
+            alt="hotel_img"
             className="w-12 aspect-square rounded"
           />
-          Hotel Transylvania
+          {room?.hotelID.hotelName}
         </div>
         <div className="text-neutral-500 pt-4">
           <p>Check in: Thu, 23 Nov 1984</p>
           <p>Check in: Thu, 23 Nov 1984</p>
-          <p>2 Nights | 1 Room</p>
+          <p>{nights} Nights | 1 Room</p>
         </div>
         <div className="text-neutral-500 text-sm pt-4 leading-relaxed">
           <p>
             Hotel tax: <span className="float-right">Included</span>
           </p>
           <p>
-            Tax and other fees: <span className="float-right">US$12.20</span>
+            Tax and other fees:{" "}
+            <span className="float-right">
+              US${room?.pricing! * 0.1 * +nights}
+            </span>
           </p>
           <p className="text-neutral-900 text-lg font-semibold">
-            Total: <span className="float-right">US$233.20</span>
+            Total:{" "}
+            <span className="float-right">
+              US${room?.pricing! * 1.1 * +nights}
+            </span>
           </p>
         </div>
       </div>
@@ -88,7 +99,7 @@ const BookingPage = () => {
       </div>
       <div className="col-span-2 py-6 px-4 bg-white rounded-lg flex flex-col gap-4 h-fit">
         <div>
-          <h3 className="text-neutral-900 text-lg font-medium">Shaker Room</h3>
+          <h3 className="text-neutral-900 text-lg font-medium">{room?.name}</h3>
           <span className="text-sm text-neutral-500">
             This room cannot be canceled/refund
           </span>
@@ -108,7 +119,9 @@ const BookingPage = () => {
       <div className="col-span-2 py-6 px-4 bg-white rounded-lg flex justify-between h-fit items-center">
         <div className="flex flex-col gap-4">
           <p className="text-neutral-900 font-medium">Total:</p>
-          <p className="text-xl text-red-500 font-bold">US$223.20</p>
+          <p className="text-xl text-red-500 font-bold">
+            US${room?.pricing! * 0.1 * +nights}
+          </p>
         </div>
         <div className="flex h-fit gap-2.5 font-semibold">
           <button
