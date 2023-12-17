@@ -42,7 +42,7 @@ const Header = () => {
         <nav className="px-4 flex gap-12 text-neutral-500 text-sm">
           <Link to="">About Us</Link>
           <Link to="">Article</Link>
-          <Link to="">Browse Hotel</Link>
+          <Link to="/browse">Browse Hotel</Link>
         </nav>
 
         {!currentUser ? (

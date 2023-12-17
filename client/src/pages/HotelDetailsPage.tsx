@@ -56,7 +56,10 @@ const HotelDetailsPage = () => {
         </p>
       </div>
       {/* Gallery */}
-      <div className="w-full aspect-[3/1] bg-black my-11" />
+      <img
+        src={detail?.thumbnail ?? detail?.images[0]}
+        className="w-full aspect-[3/1] bg-black my-11 object-cover rounded-xl"
+      />
       {/* Date & Guests Picker */}
       <div className="flex justify-center items-center gap-5">
         <div className="flex items-center border-2 border-neutral-500 rounded-full px-2 py-1.5">
