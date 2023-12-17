@@ -38,7 +38,7 @@ router.post("/create", authenticateUser, async (req, res) => {
     images,
   });
   const hotel = await Hotel.findById(hotelID);
-  const isRoomPriceLowest = price < hotel.pricing ?? true;
+  const isRoomPriceLowest = price < hotel.pricing || true;
 
   if (isRoomPriceLowest) {
     hotel.pricing = price;

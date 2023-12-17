@@ -32,7 +32,7 @@ router.post("/login", async (req, res) => {
     };
 
     const accessToken = jwt.sign(foundUser, process.env.JWT_ACCESS_SECRET, {
-      expiresIn: "30s",
+      expiresIn: "5m",
     });
 
     const refreshToken = jwt.sign(
@@ -104,7 +104,7 @@ router.get("/refresh", async (req, res) => {
           avatar: user.avatar,
         },
         process.env.JWT_ACCESS_SECRET,
-        { expiresIn: "30s" }
+        { expiresIn: "5m" }
       );
       res.status(200).json({ accessToken });
     }
