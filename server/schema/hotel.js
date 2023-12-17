@@ -40,7 +40,6 @@ const hotelSchema = new mongoose.Schema({
   },
   hotelDescription: {
     type: String,
-    required: true,
   },
   pricing: {
     type: Number,

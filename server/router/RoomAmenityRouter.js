@@ -4,7 +4,7 @@ const RoomAmenity = require("../schema/roomAmenity");
 // Get all room amenities
 router.route("/getall").get(async (req, res) => {
   try {
-    const roomAmenities = await RoomAmenity.find().populate("RoomID");
+    const roomAmenities = await RoomAmenity.find();
     res.status(200).json(roomAmenities);
   } catch (error) {
     res.status(500).json({ Error: error.message });

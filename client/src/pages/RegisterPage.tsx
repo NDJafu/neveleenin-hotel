@@ -1,8 +1,13 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import logo from "../assets/logo.svg";
 import femboy from "../assets/femboy.mp4";
 import registerBG from "../assets/login.png";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../utils/hooks";
 import { useRegisterMutation } from "../features/auth/authApiSlice";
 
@@ -49,6 +54,18 @@ const RegisterPage = () => {
     password: "",
     confirmPassword: "",
   });
+  const [params] = useSearchParams();
+
+  const usernameInput = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    usernameInput.current?.focus();
+    if (currentUser && !isLoading) {
+      const redirectUrl = params.get("redirect");
+      if (redirectUrl) navigate(redirectUrl);
+      else navigate(-1);
+    }
+  }, []);
 
   const theShot = Math.floor(Math.random() * 6) + 1;
   const [firstShot, setFirstShot] = useState(theShot);
@@ -67,10 +84,6 @@ const RegisterPage = () => {
     }
     setRegisterForm({ username: "", password: "", confirmPassword: "" });
   };
-
-  if (currentUser) {
-    navigate(-1);
-  }
 
   return (
     <div className="w-full h-screen p-4">
@@ -95,6 +108,7 @@ const RegisterPage = () => {
               name="username"
               id="username"
               placeholder="Enter your username here"
+              ref={usernameInput}
               value={registerForm.username}
               onChange={(e) => {
                 setRegisterForm((prev) => ({

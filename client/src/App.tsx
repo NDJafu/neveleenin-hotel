@@ -21,7 +21,16 @@ import ManageHotelPage from "./pages/admin/ManageHotelPage";
 import MainLayout from "./pages/MainLayout";
 import BookingLayout from "./pages/BookingLayout";
 import AdminLayout from "./pages/admin/AdminLayout";
-import { storage } from "./app/firebase";
+
+//Partnership page imports
+import HotelInformationPage from "./pages/partnership/HotelInformationPage";
+import CreateRoomPage from "./pages/partnership/CreateRoomPage";
+import PartnershipSteps from "./pages/partnership/PartnershipSteps";
+import AddServicesPage from "./pages/partnership/AddServicesPage";
+import AddAmenitiesPage from "./pages/partnership/AddAmenitiesPage";
+import HotelPhotosPage from "./pages/partnership/HotelPhotosPage";
+import AddPoliciesPage from "./pages/partnership/AddPoliciesPage";
+import RegistrationCompletePage from "./pages/partnership/RegistrationCompletePage";
 
 function App() {
   const token = useAppSelector((state) => state.auth.token);
@@ -56,6 +65,20 @@ function App() {
         <Route element={<BookingLayout />}>
           <Route path="booking/:id" element={<BookingPage />} />
           <Route path="payment" element={<PaymentPage />} />
+          {token && (
+            <Route path="partnership/register/*" element={<PartnershipSteps />}>
+              <Route
+                path="basic-information"
+                element={<HotelInformationPage />}
+              />
+              <Route path="create-room" element={<CreateRoomPage />} />
+              <Route path="facilities" element={<AddServicesPage />} />
+              <Route path="amenities" element={<AddAmenitiesPage />} />
+              <Route path="photos" element={<HotelPhotosPage />} />
+              <Route path="policies" element={<AddPoliciesPage />} />
+              <Route path="complete" element={<RegistrationCompletePage />} />
+            </Route>
+          )}
         </Route>
 
         {token && currentUser?.role == "admin" && (

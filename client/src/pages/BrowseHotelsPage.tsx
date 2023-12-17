@@ -1,5 +1,4 @@
 import SearchFilter from "../components/Listings/SearchFilter";
-import example from "../assets/kingford.png";
 import { useSearchParams } from "react-router-dom";
 import Hotel from "../components/Listings/Hotel";
 import { useGetHotelListingsQuery } from "../features/hotel/hotelApiSlice";

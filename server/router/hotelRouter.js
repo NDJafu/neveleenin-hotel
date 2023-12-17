@@ -25,17 +25,25 @@ router.get("/:hotelID", async (req, res) => {
 });
 
 router.post("/create", authenticateUser, async (req, res) => {
-  const { hotelName, hotelAddress, membershipStatus, hotelDescription, owner } =
-    req.body;
-
-  checkPermissonToChangeInfo(req.user, owner);
+  const {
+    hotelName,
+    hotelAddress,
+    membershipStatus,
+    hotelDescription,
+    services,
+    policies,
+    images,
+  } = req.body;
 
   const newHotel = new Hotel({
     hotelName,
     hotelAddress,
     membershipStatus,
     hotelDescription,
-    owner,
+    owner: req.user.id,
+    services,
+    policies,
+    images,
   });
 
   try {

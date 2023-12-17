@@ -1,4 +1,4 @@
-import { BsSun, BsBell } from "react-icons/bs";
+import { BsSun } from "react-icons/bs";
 import { useAppSelector } from "../../utils/hooks";
 import UserProfile from "../common/UserProfile";
 

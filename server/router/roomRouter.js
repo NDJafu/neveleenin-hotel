@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const authenticateUser = require("../middlewares/authentication");
+const Hotel = require("../schema/hotel");
 const Room = require("../schema/room");
 
 router.get("/getRoomsByHotel/:hotelID", async (req, res) => {
@@ -24,12 +25,28 @@ router.get("/:roomID", async (req, res) => {
 
 // Create a new room
 router.post("/create", authenticateUser, async (req, res) => {
-  const { name, price, hotel, roomNumber, roomSize } = req.body;
+  const { name, price, hotelID, roomNumber, roomSize, amenities, images } =
+    req.body;
 
-  const newRoom = new Room({ name, price, hotel, roomNumber, roomSize });
+  const newRoom = new Room({
+    name,
+    price,
+    hotelID,
+    roomNumber,
+    roomSize,
+    amenities,
+    images,
+  });
+  const hotel = await Hotel.findById(hotelID);
+  const isRoomPriceLowest = price < hotel.pricing ?? true;
+
+  if (isRoomPriceLowest) {
+    hotel.pricing = price;
+  }
 
   try {
     await newRoom.save();
+    await hotel.save();
     res.status(201).json({ message: "Room created successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });

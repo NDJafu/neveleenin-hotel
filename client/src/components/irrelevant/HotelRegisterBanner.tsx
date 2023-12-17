@@ -16,7 +16,7 @@ const HotelRegisterBanner = () => {
         more customers.
       </h1>
       <Link
-        to="/register?redirect=/partnership/register"
+        to="/register?redirect=/partnership/register/basic-information"
         className="px-4 py-3 bg-green-500 text-white font-semibold rounded-full"
       >
         Join Us Now

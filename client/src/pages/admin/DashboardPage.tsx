@@ -1,4 +1,3 @@
-import React from "react";
 import { BsBuildings, BsChevronDoubleUp } from "react-icons/bs";
 
 const DashboardPage = () => {

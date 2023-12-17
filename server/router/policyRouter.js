@@ -1,13 +1,11 @@
-const router = require('express').Router();
-const mongoose = require('mongoose');
-const Policy = require('../schema/policy');
+const router = require("express").Router();
+const mongoose = require("mongoose");
+const Policy = require("../schema/policy");
 
 // Get all policies for a specific hotel
-router.get('/getall/:hotelID', async (req, res) => {
-  const hotelID = req.params.hotelID;
-
+router.get("/getall", async (req, res) => {
   try {
-    const policies = await Policy.find({ hotelID });
+    const policies = await Policy.find({});
     res.status(200).json(policies);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -15,7 +13,7 @@ router.get('/getall/:hotelID', async (req, res) => {
 });
 
 // Create a new policy for a specific hotel
-router.post('/create/:hotelID', async (req, res) => {
+router.post("/create/:hotelID", async (req, res) => {
   const hotelID = req.params.hotelID;
   const { policyName, description } = req.body;
 
@@ -23,14 +21,14 @@ router.post('/create/:hotelID', async (req, res) => {
 
   try {
     await newPolicy.save();
-    res.status(201).json({ message: 'Policy created successfully' });
+    res.status(201).json({ message: "Policy created successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
 // Update a policy for a specific hotel
-router.put('/:policyID', async (req, res) => {
+router.put("/:policyID", async (req, res) => {
   const policyID = req.params.policyID;
   const { policyName, description } = req.body;
 
@@ -38,7 +36,7 @@ router.put('/:policyID', async (req, res) => {
     const policy = await Policy.findOne(policyID);
 
     if (!policy) {
-      res.status(404).json({ message: 'Policy not found' });
+      res.status(404).json({ message: "Policy not found" });
       return;
     }
 
@@ -47,25 +45,25 @@ router.put('/:policyID', async (req, res) => {
 
     await policy.save();
 
-    res.status(200).json({ message: 'Policy updated successfully' });
+    res.status(200).json({ message: "Policy updated successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
 // Delete a policy for a specific hotel
-router.delete('/:policyID', async (req, res) => {
+router.delete("/:policyID", async (req, res) => {
   const policyID = req.params.policyID;
 
   try {
     const policy = await Policy.findOneAndDelete(policyID);
 
     if (!policy) {
-      res.status(404).json({ message: 'Policy not found' });
+      res.status(404).json({ message: "Policy not found" });
       return;
     }
 
-    res.status(200).json({ message: 'Policy deleted successfully' });
+    res.status(200).json({ message: "Policy deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

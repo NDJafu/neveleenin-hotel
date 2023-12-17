@@ -1,15 +1,22 @@
-import React from "react";
 import { RxDimensions } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import { Room as RoomProps } from "../../app/types";
 
-const Room = ({ _id, name, roomSize, pricing, thumbnail }: RoomProps) => {
+const Room = ({
+  _id,
+  name,
+  roomSize,
+  pricing,
+  price,
+  thumbnail,
+  images,
+}: RoomProps) => {
   return (
     <div className="flex flex-col gap-4">
       <h3 className="text-neutral-900 font-medium">{name}</h3>
       <div className="flex gap-6">
         <img
-          src={thumbnail}
+          src={thumbnail ?? images?.[0]}
           className="aspect-[2/1] h-72 object-cover rounded-2xl"
         />
         <div className="flex flex-col gap-5 my-1 text-neutral-700 flex-grow">
@@ -22,7 +29,8 @@ const Room = ({ _id, name, roomSize, pricing, thumbnail }: RoomProps) => {
         </div>
         <div className="flex flex-col gap-3 justify-center items-center">
           <p className="text-green-700 text-2xl font-medium">
-            {pricing}$/<span className="text-neutral-500 text-xl">Night</span>
+            {pricing ?? price}$/
+            <span className="text-neutral-500 text-xl">Night</span>
           </p>
           <Link
             to={`/booking/${_id}`}

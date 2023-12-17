@@ -18,7 +18,7 @@ const policyRouter = require("./router/policyRouter");
 const reviewRouter = require("./router/reviewRouter");
 const hotelServiceRouter = require("./router/hotelServiceRouter");
 const invoiceRouter = require("./router/invoiceRouter");
-const roomAmenitiesRouter = require("./router/RoomAmenityRouter");
+const roomAmenitiesRouter = require("./router/roomAmenityRouter");
 const legalDocumentRouter = require("./router/legalDocumentRouter");
 const authenticateUser = require("./middlewares/authentication");
 

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import loginBG from "../assets/login.png";
 import logo from "../assets/logo.svg";
 import { useAppSelector } from "../utils/hooks";
@@ -7,7 +7,8 @@ import { useLoginMutation } from "../features/auth/authApiSlice";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [login, { isLoading, error }] = useLoginMutation();
+  const [params] = useSearchParams();
+  const [login, { isLoading }] = useLoginMutation();
   const currentUser = useAppSelector((state) => state.auth.currentUser);
   const [loginForm, setLoginForm] = useState({
     username: "",
@@ -18,6 +19,11 @@ const LoginPage = () => {
 
   useEffect(() => {
     usernameInput.current?.focus();
+    if (currentUser && !isLoading) {
+      const redirectUrl = params.get("redirect");
+      if (redirectUrl) navigate(redirectUrl);
+      else navigate(-1);
+    }
   }, []);
 
   const submitForm = async (e: React.FormEvent) => {
@@ -34,10 +40,6 @@ const LoginPage = () => {
       .catch((error) => alert(error.data.error));
     setLoginForm({ username: "", password: "" });
   };
-
-  if (currentUser) {
-    navigate(-1);
-  }
 
   return (
     <div
