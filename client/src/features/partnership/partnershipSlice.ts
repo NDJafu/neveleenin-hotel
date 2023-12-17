@@ -27,6 +27,9 @@ const partnershipSlice = createSlice({
     addRoom: (state, action) => {
       state.rooms.push(action.payload);
     },
+    removeRoom: (state, action) => {
+      state.rooms.splice(action.payload, 1);
+    },
     addService: (state, action) => {
       state.services.push(action.payload);
     },
@@ -63,6 +66,7 @@ const partnershipSlice = createSlice({
 export const {
   setBasicInfo,
   addRoom,
+  removeRoom,
   addService,
   removeService,
   addAmenityToRoom,

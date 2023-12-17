@@ -1,13 +1,15 @@
 import { LiaBedSolid } from "react-icons/lia";
-import { useAppSelector } from "../../utils/hooks";
+import { useAppDispatch, useAppSelector } from "../../utils/hooks";
 import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import CreateRoomForm from "../../components/Partnership/CreateRoomForm";
+import { removeRoom } from "../../features/partnership/partnershipSlice";
 
 const CreateRoomPage = () => {
   const { hotelName, street, country, city } = useAppSelector(
     (state) => state.partnership.basicInfo
   );
+  const dispatch = useAppDispatch();
 
   const basicInfoIsEmpty =
     hotelName.length == 0 ||
@@ -59,7 +61,12 @@ const CreateRoomPage = () => {
                 className="bg-white rounded-lg flex items-center px-5 h-20 justify-between text-neutral-700 font-medium"
               >
                 {room.name}
-                <p>Number of this type: {room.roomNumber}</p>
+                <div className="flex gap-2">
+                  Number of this type: {room.roomNumber}
+                  <button onClick={() => dispatch(removeRoom(index))}>
+                    Remove room
+                  </button>
+                </div>
               </div>
             ))}
             <div className="flex ml-auto gap-2">

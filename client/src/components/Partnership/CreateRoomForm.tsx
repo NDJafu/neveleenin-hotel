@@ -43,6 +43,11 @@ const CreateRoomForm = ({ finish }: { finish: () => void }) => {
   const handleCreateRoom = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (createRoomForm.amenities.length == 0) {
+      alert("Please pick the room type!");
+      return;
+    }
+
     if (imageFiles.length == 0) {
       alert("Please upload at least 1 image of this room");
       return;
@@ -88,15 +93,25 @@ const CreateRoomForm = ({ finish }: { finish: () => void }) => {
             amenities: [e.target.value],
           }))
         }
-        defaultValue="none"
         className="px-6 py-3 border border-neutral-300 placeholder:text-neutral-500 rounded-lg outline-none w-1/2"
+        required
       >
-        <option disabled className="disabled:text-neutral-500" value="none">
+        <option
+          disabled
+          selected
+          hidden
+          className="disabled:text-neutral-500"
+          value="none"
+        >
           Select room type
         </option>
         {amenities?.map((amenity) => {
           if (amenity.category == "Type of unit")
-            return <option value={amenity._id}>{amenity.name}</option>;
+            return (
+              <option key={amenity._id} value={amenity._id}>
+                {amenity.name}
+              </option>
+            );
         })}
       </select>
 
