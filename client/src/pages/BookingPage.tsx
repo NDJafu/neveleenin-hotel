@@ -4,6 +4,11 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { IoIosBed } from "react-icons/io";
 import { FaUtensils } from "react-icons/fa6";
 import { useGetRoomByIdQuery } from "../features/room/roomApiSlice";
+import {
+  useCreateReservationMutation,
+  useDeleteReservationMutation,
+} from "../features/booking/bookingApiSlice";
+import { StringFormat } from "firebase/storage";
 
 const BookingPage = () => {
   const { id } = useParams();
@@ -16,6 +21,38 @@ const BookingPage = () => {
     email: "",
   });
   const { data: room } = useGetRoomByIdQuery(id!);
+  const [createReservation] = useCreateReservationMutation();
+
+  function convertToDateType(input: string | null) {
+    if (input == null) return;
+    const parts = input.split("/");
+    return new Date(`${parts[0]}-${parts[1]}-${parts[2]}`);
+  }
+
+  function formatDate(inputDate: string | null) {
+    const formattedDate = convertToDateType(inputDate);
+
+    if (formattedDate)
+      return formattedDate.toLocaleDateString("en-US", {
+        weekday: "short", // E
+        day: "2-digit", // dd
+        month: "short", // Dec
+        year: "numeric", // YYYY
+      });
+  }
+
+  const confirmReservation = async () => {
+    await createReservation({
+      roomID: id!,
+      guestName: contactForm.fullName,
+      email: contactForm.email,
+      checkInTime: convertToDateType(bookingParams.get("checkin"))!,
+      checkOutTime: convertToDateType(bookingParams.get("checkout"))!,
+      totalAmount: Math.round(room?.price! * +nights * 1.1),
+    })
+      .unwrap()
+      .then((response) => navigate(`/payment/${response.reservation._id}`));
+  };
 
   return (
     <div className="w-3/5 mx-auto grid grid-cols-3 gap-4">
@@ -60,16 +97,18 @@ const BookingPage = () => {
       <div className="bg-white p-4 flex flex-col divide-y divide-neutral-300 gap-4 rounded-lg">
         <div className="flex items-center gap-2.5 text-neutral-900 font-semibold">
           <img
-            src={room?.hotelID.thumbnail}
+            src={room?.hotelID.thumbnail ?? room?.hotelID.images?.[0]}
             alt="hotel_img"
             className="w-12 aspect-square rounded"
           />
           {room?.hotelID.hotelName}
         </div>
         <div className="text-neutral-500 pt-4">
-          <p>Check in: Thu, 23 Nov 1984</p>
-          <p>Check in: Thu, 23 Nov 1984</p>
-          <p>{nights} Nights | 1 Room</p>
+          <p>Check in: {formatDate(bookingParams.get("checkin"))}</p>
+          <p>Check out: {formatDate(bookingParams.get("checkout"))}</p>
+          <p>
+            {nights} Nights | {bookingParams.get("rooms")} Room
+          </p>
         </div>
         <div className="text-neutral-500 text-sm pt-4 leading-relaxed">
           <p>
@@ -78,13 +117,13 @@ const BookingPage = () => {
           <p>
             Tax and other fees:{" "}
             <span className="float-right">
-              US${room?.pricing! * 0.1 * +nights}
+              US${Math.round(room?.pricing ?? room?.price! * 0.1 * +nights)}
             </span>
           </p>
           <p className="text-neutral-900 text-lg font-semibold">
             Total:{" "}
             <span className="float-right">
-              US${room?.pricing! * 1.1 * +nights}
+              US${Math.round(room?.pricing ?? room?.price! * 1.1 * +nights)}
             </span>
           </p>
         </div>
@@ -120,13 +159,13 @@ const BookingPage = () => {
         <div className="flex flex-col gap-4">
           <p className="text-neutral-900 font-medium">Total:</p>
           <p className="text-xl text-red-500 font-bold">
-            US${room?.pricing! * 0.1 * +nights}
+            US${Math.round(room?.price! * +nights * 1.1)}
           </p>
         </div>
         <div className="flex h-fit gap-2.5 font-semibold">
           <button
             className="bg-blue-200 text-blue-900 px-6 py-3 rounded-full"
-            onClick={() => navigate("/payment")}
+            onClick={confirmReservation}
           >
             Continue to payment
           </button>

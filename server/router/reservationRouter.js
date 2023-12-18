@@ -1,48 +1,73 @@
 const router = require("express").Router();
 const authenticateUser = require("../middlewares/authentication");
-const Reservation = require("../schema/reservation")
+const Reservation = require("../schema/reservation");
 
 router.get("/getall", async (req, res) => {
-    try {
-      const reservation = await Reservation.find().populate("userID").populate("roomID");
-      res.status(200).json(reservation);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
+  try {
+    const reservation = await Reservation.find()
+      .populate("userID")
+      .populate("roomID");
+    res.status(200).json(reservation);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-router.route("/getReservasion/:reservationID").get(async (req, res) => {
+router.route("/:reservationID").get(async (req, res) => {
   const { reservationID } = req.params;
   try {
-    const reservation = await Reservation.findById(reservationID);
+    const reservation = await Reservation.findById(reservationID).populate({
+      path: "roomID",
+      populate: {
+        path: "hotelID",
+      },
+    });
     res.status(200).json(reservation);
   } catch (error) {
     res.status(500).json({ Error: error.message });
   }
 });
 
-router.route("/getReservasionsByUser/:userID").get(async (req, res) => {
-    const { userID } = req.params;
-    try {
-      const reservations = await Reservation.find({ userID: userID });
-      res.status(200).json(reservations);
-    } catch (error) {
-      res.status(500).json({ Error: error.message });
-    }
-  });
+router.route("/getReservationsByUser/:userID").get(async (req, res) => {
+  const { userID } = req.params;
+  try {
+    const reservations = await Reservation.find({ userID: userID });
+    res.status(200).json(reservations);
+  } catch (error) {
+    res.status(500).json({ Error: error.message });
+  }
+});
 
 // Create a new reservation, bitch!!!
-router.post("/create", authenticateUser, async (req, res) => {
-    const { roomID, userID, status, checkInTime, checkOutTime } = req.body;
-  
-    const bookTime = Date.now();
-    const momentObject = moment(bookTime);
-    const bookingDate = momentObject.format("YYYY-MM-DD HH:mm:ss");
-    const newReservation = new Reservation({ roomID, userID, status, bookingDate, checkInTime, checkOutTime });
+router.post("/create", async (req, res) => {
+  const {
+    roomID,
+    userID,
+    email,
+    guestName,
+    status,
+    checkInTime,
+    checkOutTime,
+    totalAmount,
+  } = req.body;
+
+  const newReservation = new Reservation({
+    roomID,
+    userID,
+    status,
+    email,
+    guestName,
+    checkInTime,
+    checkOutTime,
+    totalAmount,
+  });
 
   try {
     await newReservation.save();
-    res.status(201).json({ message: "Reservation created successfully" });
+    res.status(201).json({
+      message: "Reservation created successfully",
+      reservation: newReservation,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -67,14 +92,13 @@ router.put("/:reservationID", authenticateUser, async (req, res) => {
 
     await reservation.save();
     res.status(200).json({ message: "Reservation updated successfully" });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
 // Delete a room
-router.delete("/:reservationID", authenticateUser, async (req, res) => {
+router.delete("/:reservationID", async (req, res) => {
   const reservationID = req.params.reservationID;
 
   try {

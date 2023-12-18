@@ -1,5 +1,5 @@
 import { RxDimensions } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Room as RoomProps } from "../../app/types";
 
 const Room = ({
@@ -11,6 +11,7 @@ const Room = ({
   thumbnail,
   images,
 }: RoomProps) => {
+  const location = useLocation();
   return (
     <div className="flex flex-col gap-4">
       <h3 className="text-neutral-900 font-medium">{name}</h3>
@@ -33,7 +34,7 @@ const Room = ({
             <span className="text-neutral-500 text-xl">Night</span>
           </p>
           <Link
-            to={`/booking/${_id}`}
+            to={`/booking/${_id}${location.search}`}
             className="px-6 py-3 bg-green-100 text-green-700 font-semibold rounded-full text-sm"
           >
             Book now

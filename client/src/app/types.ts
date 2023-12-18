@@ -63,3 +63,15 @@ export type Policy = {
   name: string;
   description: string;
 };
+
+export type Reservation = {
+  _id?: string;
+  roomID: string;
+  guestName: string;
+  userID?: string;
+  email: string;
+  checkInTime: Date;
+  checkOutTime: Date;
+  createdAt?: Date;
+  totalAmount: number;
+};

@@ -20,6 +20,7 @@ const hotelServiceRouter = require("./router/hotelServiceRouter");
 const invoiceRouter = require("./router/invoiceRouter");
 const roomAmenitiesRouter = require("./router/roomAmenityRouter");
 const legalDocumentRouter = require("./router/legalDocumentRouter");
+const reservationRouter = require("./router/reservationRouter");
 const authenticateUser = require("./middlewares/authentication");
 
 const PORT = process.env.PORT;
@@ -41,6 +42,7 @@ app.use("/service", authenticateUser, hotelServiceRouter);
 app.use("/invoice", invoiceRouter);
 app.use("/amenities", authenticateUser, roomAmenitiesRouter);
 app.use("/documents", authenticateUser, legalDocumentRouter);
+app.use("/reservation", reservationRouter);
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

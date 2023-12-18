@@ -1,9 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import fluent_location from "../assets/location-filled.svg";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import { BsCalendar3 } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GuestOptions from "../components/Detail/GuestOptions";
 import { useGetRoomsQuery } from "../features/room/roomApiSlice";
 import { useGetHotelByIdQuery } from "../features/hotel/hotelApiSlice";
@@ -11,6 +11,7 @@ import Room from "../components/Detail/Room";
 
 const HotelDetailsPage = () => {
   const { id } = useParams();
+  const [bookingParams, setBookingParams] = useSearchParams();
   const { data: rooms } = useGetRoomsQuery(id!);
   const { data: detail } = useGetHotelByIdQuery(id!);
   const [dates, setDates] = useState<DateObject[]>([
@@ -18,21 +19,31 @@ const HotelDetailsPage = () => {
     new DateObject().add(1, "days"),
   ]);
   const [guests, setGuests] = useState({
-    rooms: 1,
-    adults: 1,
-    childrens: 0,
+    rooms: Number(bookingParams.get("rooms") ?? 1),
+    adults: Number(bookingParams.get("adults") ?? 1),
+    childrens: Number(bookingParams.get("childrens") ?? 0),
   });
   const [showGuestModal, setShowGuestModal] = useState(false);
   const nights = dates.length > 1 ? dates[1].day - dates[0].day : 0;
-  const guestString = () => {
-    let result = `${guests.rooms} Room`;
-    if (guests.rooms > 1) result += "s";
-    const numberOfGuests = guests.adults + guests.childrens;
-    result += `, ${numberOfGuests} Guest`;
-    if (numberOfGuests > 1) result += "s";
-    return result;
-  };
-  const roomPrices = rooms?.map((obj) => obj["pricing"]);
+  const numberOfGuests = guests.adults + guests.childrens;
+  const roomAndGuest = `${guests.rooms} Room${
+    guests.rooms > 1 ? "s" : ""
+  }, ${numberOfGuests} Guest${numberOfGuests > 1 ? "s" : ""}`;
+
+  useEffect(() => {
+    bookingParams.set("rooms", guests.rooms.toString());
+    bookingParams.set("adults", guests.adults.toString());
+    if (guests.childrens > 0)
+      bookingParams.set("childrens", guests.childrens.toString());
+    else bookingParams.delete("childrens");
+
+    bookingParams.set("nights", nights.toString());
+    if (dates.length > 1) {
+      bookingParams.set("checkin", dates[0].toString());
+      bookingParams.set("checkout", dates[1].toString());
+    }
+    setBookingParams(bookingParams, { replace: true });
+  }, [guests, dates]);
 
   return (
     <main className="mx-24">
@@ -48,9 +59,7 @@ const HotelDetailsPage = () => {
           </p>
         </div>
         <p className="text-2xl text-green-700 font-medium">
-          {roomPrices &&
-            roomPrices.length > 0 &&
-            `${Math.min(...roomPrices)}-${Math.max(...roomPrices)}`}
+          {detail?.pricing}
           $/
           <span className="text-xl text-neutral-500">Night</span>
         </p>
@@ -84,7 +93,7 @@ const HotelDetailsPage = () => {
           className="border-2 border-neutral-500 rounded-full px-3 py-1.5 text-neutral-500 font-semibold"
           onClick={() => setShowGuestModal(true)}
         >
-          {guestString()}
+          {roomAndGuest}
         </button>
         {showGuestModal && (
           <>
