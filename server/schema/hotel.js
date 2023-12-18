@@ -19,7 +19,7 @@ const hotelSchema = new mongoose.Schema({
   services: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Service",
+      ref: "HotelService",
     },
   ],
   policies: [

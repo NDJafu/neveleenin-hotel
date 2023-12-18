@@ -4,7 +4,7 @@ const Hotel = require("../schema/hotel");
 
 router.get("/getall", async (req, res) => {
   try {
-    const hotels = await Hotel.find({});
+    const hotels = await Hotel.find();
     res.status(200).json(hotels);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -15,8 +15,10 @@ router.get("/:hotelID", async (req, res) => {
   const { hotelID } = req.params;
   try {
     const hotel = await Hotel.findById(hotelID)
-      .populate("owner")
-      .populate("legalDocuments");
+      .populate("owner", "username avatar")
+      .populate("legalDocuments")
+      .populate("services")
+      .populate("policies");
 
     res.status(200).json(hotel);
   } catch (error) {
@@ -70,7 +72,8 @@ router.put("/:hotelID", authenticateUser, async (req, res) => {
   try {
     const hotel = await Hotel.findById(hotelID)
       .populate("owner")
-      .populate("legalDocuments");
+      .populate("legalDocuments")
+      .populate("services");
 
     if (!hotel) {
       res.status(404).json({ message: "Hotel not found" });

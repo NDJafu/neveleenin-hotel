@@ -25,7 +25,12 @@ const Hotel = ({
         </div>
       </div>
       <div className="flex flex-col gap-2 w-1/2 py-4">
-        <h3 className="text-xl text-neutral-900 font-medium">{hotelName}</h3>
+        <Link
+          to={`/detail/${_id}`}
+          className="text-xl text-neutral-900 font-medium hover:underline w-fit"
+        >
+          {hotelName}
+        </Link>
         <p className="flex items-center text-neutral-500 gap-2 text-sm font-normal">
           <FaMapLocationDot size={20} /> {hotelAddress}
         </p>
