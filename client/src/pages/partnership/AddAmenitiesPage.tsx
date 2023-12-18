@@ -1,7 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Accordion from "../../components/Partnership/amenities/Accordion";
+import { useAppSelector } from "../../utils/hooks";
 
 const AddAmenitiesPage = () => {
+  const rooms = useAppSelector((state) => state.partnership.rooms);
+
+  if (rooms.length == 0) return <Navigate to="../facilities" />;
+
   return (
     <div className="w-3/5 mx-auto my-10">
       <h1 className="text-3xl font-bold text-neutral-900">Amenities</h1>

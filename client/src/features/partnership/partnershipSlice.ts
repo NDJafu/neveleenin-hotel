@@ -40,7 +40,6 @@ const partnershipSlice = createSlice({
     },
     addAmenityToRoom: (state, action) => {
       const { index, selectedAmenity } = action.payload;
-      console.log(action.payload);
       state.rooms[index].amenities.push(selectedAmenity);
     },
     removeAmenityFromRoom: (state, action) => {

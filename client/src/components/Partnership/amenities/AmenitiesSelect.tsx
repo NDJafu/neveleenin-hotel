@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Amenity } from "../../../app/types";
 import { useAppDispatch, useAppSelector } from "../../../utils/hooks";
 import {
@@ -7,25 +7,17 @@ import {
 } from "../../../features/partnership/partnershipSlice";
 
 const AmenitiesSelect = (amenity: Amenity) => {
-  const [addThisAmenity, setAddThisAmenity] = useState(false);
-  const [allRooms, setAllRooms] = useState(true);
   const rooms = useAppSelector((state) => state.partnership.rooms);
+  const ifAllRoomHasThisAmenity = rooms.every((room) =>
+    room.amenities.includes(amenity._id)
+  );
+  const ifAtleastOneHasThisAmentity = rooms.some((room) =>
+    room.amenities.includes(amenity._id)
+  );
+  const [addThisAmenity, setAddThisAmenity] = useState(
+    ifAtleastOneHasThisAmentity
+  );
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (addThisAmenity && allRooms) {
-      for (let index = 0; index < rooms.length; index++) {
-        if (!rooms[index].amenities.includes(amenity._id))
-          dispatch(addAmenityToRoom({ index, selectedAmenity: amenity._id }));
-      }
-    } else {
-      for (let index = 0; index < rooms.length; index++) {
-        dispatch(
-          removeAmenityFromRoom({ index, selectedAmenity: amenity._id })
-        );
-      }
-    }
-  }, [addThisAmenity, allRooms]);
 
   return (
     <div className="p-4 border-b border-neutral-300 flex flex-col gap-2 hover:bg-black/10">
@@ -35,7 +27,24 @@ const AmenitiesSelect = (amenity: Amenity) => {
             type="checkbox"
             checked={addThisAmenity}
             onChange={() => {
-              setAddThisAmenity(!addThisAmenity);
+              if (!ifAtleastOneHasThisAmentity) {
+                setAddThisAmenity(true);
+                rooms.forEach((_room, index) =>
+                  dispatch(
+                    addAmenityToRoom({ index, selectedAmenity: amenity._id })
+                  )
+                );
+              } else {
+                setAddThisAmenity(false);
+                rooms.forEach((_room, index) =>
+                  dispatch(
+                    removeAmenityFromRoom({
+                      index,
+                      selectedAmenity: amenity._id,
+                    })
+                  )
+                );
+              }
             }}
           />
           {amenity.name}
@@ -45,23 +54,38 @@ const AmenitiesSelect = (amenity: Amenity) => {
             <label className="flex gap-2">
               <input
                 type="radio"
-                checked={allRooms}
-                onChange={() => setAllRooms(true)}
+                checked={ifAllRoomHasThisAmenity}
+                onChange={() =>
+                  rooms.forEach((_room, index) =>
+                    dispatch(
+                      addAmenityToRoom({ index, selectedAmenity: amenity._id })
+                    )
+                  )
+                }
               />
               All room
             </label>
             <label className="flex gap-2">
               <input
                 type="radio"
-                checked={!allRooms}
-                onChange={() => setAllRooms(false)}
+                checked={!ifAllRoomHasThisAmenity}
+                onChange={() =>
+                  rooms.forEach((_room, index) =>
+                    dispatch(
+                      removeAmenityFromRoom({
+                        index,
+                        selectedAmenity: amenity._id,
+                      })
+                    )
+                  )
+                }
               />
               Some room
             </label>
           </div>
         )}
       </div>
-      {!allRooms && addThisAmenity && (
+      {!ifAllRoomHasThisAmenity && addThisAmenity && (
         <>
           <p>Select where this amenity is available.</p>
           <div>
@@ -78,7 +102,6 @@ const AmenitiesSelect = (amenity: Amenity) => {
                           selectedAmenity: amenity._id,
                         })
                       );
-                      console.log("added");
                     } else {
                       dispatch(
                         removeAmenityFromRoom({
@@ -86,7 +109,6 @@ const AmenitiesSelect = (amenity: Amenity) => {
                           selectedAmenity: amenity._id,
                         })
                       );
-                      console.log("removed");
                     }
                   }}
                 />
