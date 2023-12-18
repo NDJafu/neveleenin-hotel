@@ -31,6 +31,7 @@ import AddAmenitiesPage from "./pages/partnership/AddAmenitiesPage";
 import HotelPhotosPage from "./pages/partnership/HotelPhotosPage";
 import AddPoliciesPage from "./pages/partnership/AddPoliciesPage";
 import RegistrationCompletePage from "./pages/partnership/RegistrationCompletePage";
+import BookingCompletePage from "./pages/BookingCompletePage";
 
 function App() {
   const token = useAppSelector((state) => state.auth.token);
@@ -64,7 +65,8 @@ function App() {
 
         <Route element={<BookingLayout />}>
           <Route path="booking/:id" element={<BookingPage />} />
-          <Route path="payment" element={<PaymentPage />} />
+          <Route path="payment/:id" element={<PaymentPage />} />
+          <Route path="booking-complete" element={<BookingCompletePage />} />
           {token && (
             <Route path="partnership/register/*" element={<PartnershipSteps />}>
               <Route
