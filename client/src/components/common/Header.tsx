@@ -1,5 +1,6 @@
 import Logo from "./Logo";
 import locationImg from "../../assets/location-filled.svg";
+import { TbHeartHandshake } from "react-icons/tb";
 import { Link, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useAppSelector } from "../../utils/hooks";
@@ -40,8 +41,17 @@ const Header = () => {
         </div>
 
         <nav className="px-4 flex gap-12 text-neutral-500 text-sm">
-          <Link to="">About Us</Link>
-          <Link to="">Article</Link>
+          <Link
+            to={
+              currentUser
+                ? "/partnership/register/basic-information"
+                : "/register?redirect=/partnership/register/basic-information"
+            }
+            className="flex items-center gap-1"
+          >
+            <TbHeartHandshake size={18} /> Join partnership
+          </Link>
+          <Link to="">Check Reservations</Link>
           <Link to="/browse">Browse Hotel</Link>
         </nav>
 
