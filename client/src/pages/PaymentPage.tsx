@@ -60,11 +60,11 @@ const PaymentPage = () => {
             type="text"
             className="px-6 py-3 border border-neutral-300 placeholder:text-neutral-500 rounded-lg outline-none w-2/3"
             placeholder="Cardholder Name"
-            value={cardInformation.number}
+            value={cardInformation.cardholder}
             onChange={(e) =>
               setCardInformation((prev) => ({
                 ...prev,
-                number: e.target.value,
+                cardholder: e.target.value,
               }))
             }
           />
@@ -74,11 +74,11 @@ const PaymentPage = () => {
               type="text"
               className="px-6 py-3 border border-neutral-300 placeholder:text-neutral-500 rounded-lg outline-none "
               placeholder="DD/MM/YY"
-              value={cardInformation.number}
+              value={cardInformation.valid}
               onChange={(e) =>
                 setCardInformation((prev) => ({
                   ...prev,
-                  number: e.target.value,
+                  valid: e.target.value,
                 }))
               }
             />
@@ -89,11 +89,11 @@ const PaymentPage = () => {
               type="text"
               className="px-6 py-3 border border-neutral-300 placeholder:text-neutral-500 rounded-lg outline-none"
               placeholder="3-digits Number"
-              value={cardInformation.number}
+              value={cardInformation.cvv}
               onChange={(e) =>
                 setCardInformation((prev) => ({
                   ...prev,
-                  number: e.target.value,
+                  cvv: e.target.value,
                 }))
               }
             />
